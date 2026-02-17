@@ -1,0 +1,50 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-error.log*
+
+# Build outputs
+dist/
+build/
+*.bundle.js
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+.env.local
+.env.*.local
+
+# Logs
+logs/
+*.log
+
+# Stripe keys (⚠️ NEVER COMMIT)
+.env
+.env.local
+stripe-keys.txt
+
+# Admin passwords
+admin-password.txt
+
+# Temp files
+*.tmp
+.cache/
+
+# Git-LFS (for large files)
+*.webm
+*.mp4
+
+# Important: Keep these files
+!data.json
+!admin.html
+!app.js
+!index.html
+!README.md
+!
