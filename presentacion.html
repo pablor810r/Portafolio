@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Presentación PechaKucha del proyecto integrador de IA PABLOR/BLOR.">
+    <title>PechaKucha | PABLOR/BLOR</title>
+    <style>
+        :root {
+            --ink: #f8f4ec;
+            --muted: #a6a9ae;
+            --night: #0b0f14;
+            --panel: #151a20;
+            --orange: #ff6b35;
+            --cyan: #54e1e8;
+            --yellow: #ffd166;
+            --line: rgba(248, 244, 236, .16);
+        }
+        * { box-sizing: border-box; }
+        html, body { width: 100%; height: 100%; }
+        body { margin: 0; overflow: hidden; background: var(--night); color: var(--ink); font-family: Georgia, 'Times New Roman', serif; }
+        button { font: inherit; }
+        .stage { min-height: 100%; display: grid; grid-template-rows: 1fr auto; padding: 28px clamp(18px, 4vw, 60px) 22px; background: radial-gradient(circle at 88% 12%, rgba(84,225,232,.12), transparent 28%), radial-gradient(circle at 8% 92%, rgba(255,107,53,.1), transparent 34%), var(--night); }
+        .presentation { position: relative; width: min(1500px, 100%); height: min(74vh, 760px); min-height: 440px; margin: auto; overflow: hidden; border: 1px solid var(--line); background: var(--panel); box-shadow: 0 24px 80px rgba(0,0,0,.4); }
+        .slide { display: none; height: 100%; position: relative; isolation: isolate; }
+        .slide.active { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(300px, .85fr); }
+        .slide::before { content: ''; position: absolute; inset: 0; z-index: -2; background: linear-gradient(115deg, rgba(11,15,20,.95) 0%, rgba(11,15,20,.7) 48%, rgba(11,15,20,.18) 100%); }
+        .slide::after { content: ''; position: absolute; inset: 0; z-index: -3; background-image: var(--slide-image); background-size: cover; background-position: center; filter: saturate(.85); transform: scale(1.02); }
+        .content { display: flex; flex-direction: column; justify-content: center; padding: clamp(28px, 6vw, 90px); }
+        .eyebrow { margin: 0 0 18px; color: var(--orange); font: 700 12px/1.2 Arial, sans-serif; letter-spacing: .2em; text-transform: uppercase; }
+        h1, h2 { max-width: 800px; margin: 0; font-weight: 700; letter-spacing: 0; line-height: .94; }
+        h1 { font-size: clamp(52px, 8vw, 122px); }
+        h2 { font-size: clamp(42px, 6vw, 92px); }
+        .accent { color: var(--cyan); }
+        .lead { max-width: 620px; margin: 24px 0 0; color: #d8d7d1; font-size: clamp(17px, 2vw, 25px); line-height: 1.35; }
+        .fact { align-self: end; display: flex; flex-direction: column; justify-content: end; padding: clamp(28px, 5vw, 72px); border-left: 1px solid rgba(248,244,236,.25); background: linear-gradient(90deg, rgba(11,15,20,.12), rgba(11,15,20,.72)); }
+        .fact-number { color: rgba(255, 209, 102, 0.88); font: 700 clamp(30px, 4vw, 58px)/.9 Arial, sans-serif; letter-spacing: -.04em; opacity: 0.9; }
+        .fact h3 { max-width: 360px; margin: 18px 0 10px; color: var(--cyan); font: 700 clamp(18px, 2vw, 28px)/1.1 Arial, sans-serif; }
+        .fact p { max-width: 380px; margin: 0; color: #d2d0c9; font: 15px/1.5 Arial, sans-serif; }
+        .script { position: absolute; left: clamp(18px, 4vw, 60px); right: clamp(18px, 4vw, 60px); bottom: 22px; z-index: 3; display: none; max-width: 760px; padding: 14px 18px; border-left: 3px solid var(--cyan); background: rgba(11,15,20,.9); color: #e4e1d9; font: italic 15px/1.45 Arial, sans-serif; }
+        body.show-notes .script { display: block; }
+        .topbar { position: absolute; inset: 22px 28px auto; z-index: 2; display: flex; justify-content: space-between; align-items: center; font: 700 12px Arial, sans-serif; letter-spacing: .12em; text-transform: uppercase; }
+        .brand { color: var(--ink); }
+        .brand span { color: var(--orange); }
+        .counter { color: var(--muted); }
+        .controls { width: min(1500px, 100%); margin: 18px auto 0; }
+        .control-row { display: flex; align-items: center; gap: 10px; }
+        .control { min-width: 42px; height: 40px; padding: 0 14px; border: 1px solid var(--line); border-radius: 0; background: rgba(21,26,32,.8); color: var(--ink); cursor: pointer; font: 700 12px Arial, sans-serif; }
+        .control:hover, .control:focus-visible { border-color: var(--cyan); color: var(--cyan); outline: none; }
+        .control.primary { border-color: var(--orange); color: var(--orange); }
+        .control-label { display: inline-block; margin-left: 4px; }
+        .timer { min-width: 70px; color: var(--yellow); font: 700 18px/1 Arial, sans-serif; text-align: center; }
+        .progress { flex: 1; height: 4px; background: rgba(248,244,236,.17); cursor: pointer; }
+        .progress-fill { width: 0; height: 100%; background: linear-gradient(90deg, var(--cyan), var(--orange)); transition: width .1s linear; }
+        .rail { display: flex; gap: 4px; margin-top: 14px; overflow-x: auto; scrollbar-width: thin; }
+        .dot { flex: 1 0 22px; height: 4px; border: 0; padding: 0; background: rgba(248,244,236,.25); cursor: pointer; }
+        .dot.active { background: var(--orange); }
+        .hint { margin: 10px 0 0; color: #787d84; font: 11px Arial, sans-serif; text-align: right; }
+        .fullscreen .presentation { width: 100%; height: 100%; }
+        @media (max-width: 720px) {
+            .stage { padding: 12px; }
+            .presentation { min-height: 520px; height: 72vh; }
+            .slide.active { grid-template-columns: 1fr; }
+            .slide::after { background-position: 65% center; }
+            .slide::before { background: linear-gradient(180deg, rgba(11,15,20,.9), rgba(11,15,20,.66) 60%, rgba(11,15,20,.96)); }
+            .content { justify-content: start; padding: 74px 24px 24px; }
+            .fact { align-self: auto; justify-content: start; padding: 20px 24px 30px; border-left: 0; border-top: 1px solid rgba(248,244,236,.25); background: rgba(11,15,20,.5); }
+            .fact-number { font-size: 36px; }
+            .fact h3 { margin: 10px 0 6px; }
+            .fact p { font-size: 13px; }
+            .control-label, .hint { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <main class="stage" aria-label="Presentación PechaKucha PABLOR BLOR">
+        <section class="presentation" id="presentation" aria-live="polite"></section>
+        <nav class="controls" aria-label="Controles de presentación">
+            <div class="control-row">
+                <button class="control" id="previous" type="button" title="Diapositiva anterior (flecha izquierda)">←<span class="control-label">Anterior</span></button>
+                <button class="control primary" id="pause" type="button" title="Pausar o reanudar (espacio)">Ⅱ<span class="control-label">Pausar</span></button>
+                <button class="control" id="next" type="button" title="Siguiente diapositiva (flecha derecha)">→<span class="control-label">Siguiente</span></button>
+                <div class="timer" id="timer" aria-label="Tiempo restante">20 s</div>
+                <div class="progress" id="progress" role="slider" aria-label="Progreso de la diapositiva" aria-valuemin="0" aria-valuemax="20" aria-valuenow="0" tabindex="0"><div class="progress-fill" id="progress-fill"></div></div>
+                <button class="control" id="notes" type="button" title="Mostrar u ocultar notas (N)">N<span class="control-label">Notas</span></button>
+                <button class="control" id="fullscreen" type="button" title="Pantalla completa (F)">⛶</button>
+            </div>
+            <div class="rail" id="rail" aria-label="Navegación por diapositivas"></div>
+            <p class="hint">20 diapositivas · 20 segundos cada una · ← → navegar · Espacio pausar · N notas · F pantalla completa</p>
+        </nav>
+    </main>
+    <script>
+        const slides = [
+            { title: 'PABLOR<span class="accent">/BLOR</span>', eyebrow: 'Proyecto integrador de IA · estudIA / Sapiencia', lead: 'Arte que conecta territorio, tecnología y aprendizaje.', number: '01', visual: '20 × 20', fact: 'Portafolio híbrido', text: 'Una solución digital para presentar obras, orientar solicitudes y convertir una idea artística en un proyecto viable.', image: 'images/arte_urbano/argelia.webp', script: 'Buenas tardes. Soy Pablo Roberth. Presento un portafolio interactivo que combina creación artística, automatización, chatbot y un modelo sencillo de Machine Learning.' },
+            { title: 'El problema', eyebrow: '01 · Contexto', lead: 'Una solicitud creativa suele llegar dispersa, sin categoría ni siguiente paso claro.', number: '01', visual: 'TRIAGE', fact: 'Atención sin estructura', text: 'BLOR necesitaba responder mejor a clientes interesados en murales, piezas digitales o talleres.', image: 'images/arte_urbano/proceso_mural_estudio_2024.webp', script: 'El problema es concreto: las solicitudes de servicios creativos llegan por distintos canales y se responden de forma manual. Eso retrasa el contacto y dificulta priorizar.' },
+            { title: 'La solución', eyebrow: '02 · Propuesta', lead: 'Un portafolio web que escucha, clasifica y acompaña.', number: '02', visual: 'WEB + ML', fact: 'Flujo integrado', text: 'Galería, asistente conversacional, formulario automatizado y clasificador local.', image: 'images/digital/predigital_robot_linea_electrica.webp', script: 'Diseñé una solución web híbrida. El visitante explora el trabajo, conversa con un agente, deja una propuesta y puede recibir una orientación automática.' },
+            { title: 'Arquitectura', eyebrow: '03 · Diseño técnico', lead: 'La inferencia ocurre en el navegador: rápida, demostrable y sin depender de una API paga.', number: '03', visual: 'CLIENT-SIDE', fact: 'Pipeline liviano', text: 'HTML + CSS + JavaScript + datos JSON + modelo k-NN.', image: 'images/digital/predigital_detalle_composicion.webp', script: 'La arquitectura separa la experiencia visual de la lógica de clasificación. El frontend ejecuta un modelo pequeño en tiempo real y consulta los datos del portafolio desde JSON.' },
+            { title: 'Dataset', eyebrow: '04 · Datos', lead: 'Doce ejemplos etiquetados para representar las tres intenciones principales.', number: '12', visual: 'MUESTRAS', fact: '3 clases', text: 'Muralismo · Arte digital · Educación y talleres.', image: 'images/arte_urbano/mural_identidad_cultural_2024.webp', script: 'Construí un dataset sintético y transparente con doce solicitudes típicas. Cada ejemplo pertenece a muralismo, arte digital o talleres.' },
+            { title: 'Preparar el texto', eyebrow: '05 · Feature engineering', lead: 'La consulta se limpia, se tokeniza y se convierte en un vector de palabras.', number: '01', visual: 'TEXTO → VECTOR', fact: 'Bag of Words', text: 'Normalización, tokenización y comparación de vocabulario.', image: 'images/digital/predigital_guardian_semilla.webp', script: 'El pipeline convierte el texto a minúsculas, elimina variaciones de acentos, separa palabras y crea una representación numérica sencilla.' },
+            { title: 'k-NN', eyebrow: '06 · Algoritmo', lead: 'La predicción busca los ejemplos más cercanos a la solicitud nueva.', number: 'k=3', visual: 'VECINOS', fact: 'Clasificación supervisada', text: 'Similitud coseno entre la consulta y los ejemplos conocidos.', image: 'images/arte_urbano/tejidoancestral.webp', script: 'El algoritmo utilizado es k-Nearest Neighbors. Compara la consulta contra el dataset y toma la clase dominante entre los tres vecinos más cercanos.' },
+            { title: 'Una pregunta real', eyebrow: '07 · Inferencia', lead: '“Necesito un mural para la fachada de mi empresa.”', number: '→', visual: 'MURAL', fact: 'Respuesta inmediata', text: 'La intención queda lista para orientar una cotización.', image: 'images/arte_urbano/babilla_altamira.webp', script: 'Si una persona escribe que necesita un mural para la fachada de su empresa, el modelo reconoce la intención muralismo y el agente puede continuar con dimensiones, ubicación y presupuesto.' },
+            { title: 'Evaluación', eyebrow: '08 · Métricas', lead: 'El modelo acierta en el conjunto de prueba de esta demostración.', number: '100%', visual: 'PRUEBA', fact: 'Resultado controlado', text: 'La métrica es útil para explicar el prototipo, pero el dataset aún es pequeño.', image: 'images/arte_urbano/soberania.webp', script: 'La prueba alcanza cien por ciento en este conjunto pequeño. No presento esto como un modelo definitivo: el siguiente paso es ampliar datos reales y usar validación cruzada.' },
+            { title: 'Cuatro piezas de IA', eyebrow: '09 · Integración', lead: 'La inteligencia artificial aparece en distintos momentos del proyecto.', number: '04', visual: 'IA', fact: 'Texto · imagen · video · código', text: 'Generación y edición asistida para construir una experiencia coherente.', image: 'images/digital/producto_print_1.webp', script: 'La IA generativa apoyó la escritura de textos, la conceptualización visual, el contenido multimedia y el desarrollo del código. La herramienta no reemplaza la decisión del autor.' },
+            { title: 'Automatización', eyebrow: '10 · Operación', lead: 'Formulario → registro → seguimiento → WhatsApp.', number: '→', visual: 'TRIGGER', fact: 'Lead estructurado', text: 'Cada propuesta queda guardada con fecha y estado pendiente de contacto.', image: 'images/arte_urbano/proceso_tecnica_aplicacion.webp', script: 'Cuando el visitante envía el formulario, se valida la información, se registra en localStorage con estado de seguimiento y se abre un mensaje prellenado de WhatsApp.' },
+            { title: 'El portafolio', eyebrow: '11 · Caso de uso', lead: 'El modelo vive dentro de una experiencia artística, no aislado en un notebook.', number: '50+', visual: 'OBRAS', fact: 'Arte urbano + tech', text: 'Galería dinámica, categorías, lightbox, chatbot y contacto.', image: 'images/arte_urbano/mural_botanico_intervension_urbana.webp', script: 'El caso de uso es BLOR Estudio Creativo. Las herramientas de IA se integran en una experiencia que ya tiene utilidad para clientes y colaboradores.' },
+            { title: 'Dimensión académica', eyebrow: '12 · Investigación', lead: 'La práctica artística abre preguntas para la visión artificial y la inmersión.', number: 'UNAL', visual: 'INVESTIGAR', fact: 'Arte + percepción', text: 'Una base para explorar silueta, cámara y proyección en tiempo real.', image: 'images/arte_urbano/inmersion.webp', script: 'Este proyecto también dialoga con mi investigación académica en la UNAL: la relación entre el cuerpo del espectador, la cámara y los entornos inmersivos.' },
+            { title: 'Rendimiento', eyebrow: '13 · Experiencia', lead: 'La respuesta local se siente inmediata y funciona con infraestructura mínima.', number: '<50ms', visual: 'LOCAL', fact: 'Baja latencia', text: 'Sin claves secretas ni costo por consulta en la demostración.', image: 'images/digital/predigital_robot_linea_electrica.webp', script: 'Al ejecutarse del lado del cliente, la clasificación evita una llamada de red. Esto reduce latencia y hace posible presentar el prototipo en una red lenta o durante una demo offline.' },
+            { title: 'Asistente conversacional', eyebrow: '14 · Sostenibilidad', lead: 'La experiencia conecta descubrimiento, orientación y contacto real.', number: '03', visual: 'CHATBOT', fact: 'Arte · servicio · estrategia', text: 'Responde preguntas clave, guía la intención y ayuda a convertir la visita en propuesta.', image: 'images/digital/producto_nft_1.webp', script: 'El asistente muestra cómo una experiencia artística puede sostenerse con orientación inteligente: responde dudas, entiende la intención y guía la siguiente acción sin pérdida de valor humano.' },
+            { title: 'Una solución escalable', eyebrow: '15 · Proyección', lead: 'El mismo patrón puede adaptarse a estudios, galerías e instituciones.', number: 'B2B', visual: 'ADAPTAR', fact: 'De prototipo a servicio', text: 'Clasificar solicitudes es el primer paso hacia asistentes especializados.', image: 'images/arte_urbano/mural_exterior_enero_2024.webp', script: 'La arquitectura es pequeña a propósito. Puede evolucionar hacia un asistente para una galería, un centro cultural o una pequeña empresa que necesita ordenar sus contactos.' },
+            { title: 'IA responsable', eyebrow: '16 · Criterio', lead: 'Un prototipo útil también debe explicar sus límites.', number: 'LOCAL', visual: 'PRIVACIDAD', fact: 'Transparencia primero', text: 'Dataset demostrativo, sin decisiones sensibles y con revisión humana.', image: 'images/arte_urbano/cauca.webp', script: 'El modelo no decide precios ni reemplaza el criterio profesional. El dataset es demostrativo y cualquier seguimiento comercial requiere revisión humana.' },
+            { title: 'Impacto local', eyebrow: '17 · Propósito', lead: 'Machine Learning aplicado a una industria creativa cercana.', number: 'MDE', visual: 'TALENTO', fact: 'Medellín · Sapiencia', text: 'Tecnología accesible para convertir conocimiento en una solución real.', image: 'images/arte_urbano/mural_retrato_cultura_2023.webp', script: 'El proyecto aterriza los conceptos del curso en un contexto local. El objetivo no es usar IA por moda, sino resolver una fricción concreta en una práctica creativa.' },
+            { title: 'Próxima versión', eyebrow: '18 · Evolución', lead: 'Más ejemplos, mejor semántica y automatizaciones conectadas.', number: '→', visual: 'V2', fact: 'Embeddings + n8n', text: 'Validación cruzada, dataset real anonimizado y conexión con Google Sheets o correo.', image: 'images/digital/predigital_guardian_semilla_estudio.webp', script: 'La siguiente versión ampliaría el dataset, usaría embeddings para comprender mejor el significado y conectaría el evento con n8n, Google Sheets o EmailJS.' },
+            { title: 'Qué entregamos', eyebrow: '19 · Cierre técnico', lead: 'Una aplicación funcional, una demo reproducible y una ruta de crecimiento.', number: '06', visual: 'REQUISITOS', fact: 'Proyecto completo', text: 'Identidad · portafolio · multimedia · chatbot · automatización · ML.', image: 'images/arte_urbano/instalacion_arte_agosto_2023.webp', script: 'La entrega reúne los componentes exigidos: identidad, portafolio, multimedia, chatbot, automatización, IA generativa y un modelo simple de Machine Learning.' },
+            { title: 'Gracias', eyebrow: '20 · Preguntas', lead: 'PABLOR/BLOR · Arte que conecta mundos.', number: '?', visual: 'CONVERSEMOS', fact: 'Demo disponible', text: 'index.html · ml_model.html · modelo_ml.ipynb', image: 'images/arte_urbano/mural_simbolo_ancestral_2024.webp', script: 'Muchas gracias a los mentores de estudIA y Sapiencia. La demo está disponible en el repositorio. Quedo atento a sus preguntas.' }
+        ];
+
+        const DURATION = 20000;
+        let current = 0;
+        let remaining = DURATION;
+        let lastTick = 0;
+        let paused = false;
+        let timerFrame;
+        const presentation = document.getElementById('presentation');
+        const timerLabel = document.getElementById('timer');
+        const progressFill = document.getElementById('progress-fill');
+        const rail = document.getElementById('rail');
+        const pauseButton = document.getElementById('pause');
+
+        const render = () => {
+            presentation.innerHTML = slides.map((slide, index) => `
+                <article class="slide ${index === current ? 'active' : ''}" style="--slide-image: url('${slide.image}')" aria-label="Diapositiva ${index + 1}: ${slide.title.replace(/<[^>]*>/g, '')}">
+                    <div class="topbar"><div class="brand">PABLOR<span>/BLOR</span></div><div class="counter">${String(index + 1).padStart(2, '0')} / 20</div></div>
+                    <div class="content"><p class="eyebrow">${slide.eyebrow}</p><h${index === 0 ? '1' : '2'}>${slide.title}</h${index === 0 ? '1' : '2'}><p class="lead">${slide.lead}</p></div>
+                    <aside class="fact"><div class="fact-number">${slide.number}</div><h3>${slide.visual}</h3><p><strong>${slide.fact}</strong><br>${slide.text}</p></aside>
+                    <div class="script"><strong>Guion · 20 segundos:</strong> ${slide.script}</div>
+                </article>
+            `).join('');
+            rail.innerHTML = slides.map((slide, index) => `<button class="dot ${index === current ? 'active' : ''}" type="button" aria-label="Ir a diapositiva ${index + 1}" data-index="${index}"></button>`).join('');
+            rail.querySelectorAll('.dot').forEach(dot => dot.addEventListener('click', () => goTo(Number(dot.dataset.index))));
+            updateControls();
+        };
+
+        const updateControls = () => {
+            const seconds = Math.ceil(remaining / 1000);
+            timerLabel.textContent = `${seconds} s`;
+            timerLabel.style.color = seconds <= 5 ? 'var(--orange)' : 'var(--yellow)';
+            progressFill.style.width = `${((DURATION - remaining) / DURATION) * 100}%`;
+            document.getElementById('progress').setAttribute('aria-valuenow', String(seconds));
+            pauseButton.innerHTML = paused ? '▶<span class="control-label">Reanudar</span>' : 'Ⅱ<span class="control-label">Pausar</span>';
+        };
+
+        const tick = timestamp => {
+            if (!lastTick) lastTick = timestamp;
+            if (!paused) {
+                remaining -= timestamp - lastTick;
+                if (remaining <= 0) { next(); lastTick = timestamp; }
+                updateControls();
+            }
+            lastTick = timestamp;
+            timerFrame = requestAnimationFrame(tick);
+        };
+
+        const goTo = index => { current = (index + slides.length) % slides.length; remaining = DURATION; lastTick = performance.now(); render(); };
+        const next = () => goTo(current + 1);
+        const previous = () => goTo(current - 1);
+        const togglePause = () => { paused = !paused; lastTick = performance.now(); updateControls(); };
+        const toggleFullscreen = () => document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
+
+        document.getElementById('next').addEventListener('click', next);
+        document.getElementById('previous').addEventListener('click', previous);
+        document.getElementById('pause').addEventListener('click', togglePause);
+        document.getElementById('notes').addEventListener('click', () => document.body.classList.toggle('show-notes'));
+        document.getElementById('fullscreen').addEventListener('click', toggleFullscreen);
+        document.getElementById('progress').addEventListener('click', event => { const rect = event.currentTarget.getBoundingClientRect(); remaining = DURATION * (1 - ((event.clientX - rect.left) / rect.width)); updateControls(); });
+        document.getElementById('progress').addEventListener('keydown', event => { if (event.key === 'ArrowRight') remaining = Math.max(0, remaining - 1000); if (event.key === 'ArrowLeft') remaining = Math.min(DURATION, remaining + 1000); updateControls(); });
+        document.addEventListener('keydown', event => { if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return; if (event.key === 'ArrowRight' || event.key === 'PageDown') next(); else if (event.key === 'ArrowLeft' || event.key === 'PageUp') previous(); else if (event.key === ' ') { event.preventDefault(); togglePause(); } else if (event.key.toLowerCase() === 'n') document.body.classList.toggle('show-notes'); else if (event.key.toLowerCase() === 'f') toggleFullscreen(); else if (event.key === 'Home') goTo(0); else if (event.key === 'End') goTo(slides.length - 1); });
+        document.addEventListener('visibilitychange', () => { lastTick = performance.now(); });
+
+        render();
+        timerFrame = requestAnimationFrame(tick);
+    </script>
+</body>
+</html>

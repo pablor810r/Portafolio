@@ -1,0 +1,1262 @@
+<!doctype html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <!-- METADATOS ESENCIALES -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="index, follow">
+    
+    <!-- SEO CRÍTICO -->
+    <title>PABLOR/BLOR | Artista Híbrido: Arte Urbano + Tecnología Digital + Academia</title>
+    <meta name="description" content="Maestro en Artes Plásticas fusionando arte urbano (BLOR), creación digital y tecnología. Muralismo, arte interactivo, NFTs y enseñanza híbrida. Medellín, Colombia.">
+    <meta name="keywords" content="arte urbano, muralismo, arte digital, artista Medellín, BLOR, PABLOR, arte tecnología, NFTs, talleres arte, comisiones artísticas">
+    
+    <!-- OPEN GRAPH / REDES SOCIALES -->
+    <meta property="og:title" content="PABLOR/BLOR | Artista Urbano - Muralismo, Arte Digital & Educación">
+    <meta property="og:description" content="Muralista y artista digital. Obras monumentales, arte urbano y educación híbrida. Medellín, Colombia.">
+    <meta property="og:image" content="/images/arte_urbano/argelia.jpg">
+    <meta property="og:url" content="">
+    <meta property="og:type" content="website">
+    
+    <!-- TWITTER CARDS -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="PABLOR/BLOR | Muralista & Artista Digital">
+    <meta name="twitter:description" content="Portafolio creativo de arte urbano, tecnología, educación y experiencia interactiva.">
+    <meta name="twitter:image" content="/images/arte_urbano/argelia.jpg">
+    
+    <!-- FAVICON -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎨</text></svg>">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    
+    <!-- PRELOAD CRÍTICO -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Space+Grotesk:wght@700&display=swap" as="style">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- STYLES -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+
+    <script src="chatbot.js" defer></script>
+    
+    <!-- STRIPE PAYMENT -->
+    <script src="https://js.stripe.com/v3/"></script>
+    
+    <!-- STYLES PERSONALIZADOS -->
+    <style>
+        :root {
+            --neon-blue: #00f3ff;
+            --neon-orange: #ff6b35;
+            --deep-navy: #0a0f1f;
+            --electric-purple: #9d4edd;
+            --accent: #00f2ff;
+            --warning: #ffd166;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--deep-navy);
+            color: #f8fafc;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+        
+        .font-impact {
+            font-family: 'Space Grotesk', sans-serif;
+            letter-spacing: -0.03em;
+            line-height: 0.95;
+        }
+        
+        /* ANIMACIONES SUAVES */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+        
+        /* ANIMACIONES AEROSOL & NEON ORANGE */
+        @keyframes spray {
+            0% { transform: scale(0.8) rotate(-10deg); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: scale(1) rotate(10deg); opacity: 0.8; }
+        }
+        
+        @keyframes neon-flicker {
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
+            20%, 24%, 55% { opacity: 0.5; }
+        }
+        
+        @keyframes glow-pulse {
+            0%, 100% { text-shadow: 0 0 10px rgba(255, 107, 53, 0.5), 0 0 20px rgba(255, 107, 53, 0.3); }
+            50% { text-shadow: 0 0 20px rgba(255, 107, 53, 1), 0 0 40px rgba(255, 107, 53, 0.6); }
+        }
+        
+        .animate-spray {
+            animation: spray 1.5s ease-out infinite;
+        }
+        
+        .animate-neon-flicker {
+            animation: neon-flicker 0.4s infinite;
+            color: var(--neon-orange);
+        }
+        
+        .glow-text {
+            animation: glow-pulse 2s ease-in-out infinite;
+            color: var(--neon-orange);
+            text-shadow: 0 0 10px rgba(255, 107, 53, 0.8);
+        }
+        
+        .btn-orange {
+            background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%);
+            color: white;
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            border: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-orange:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(255, 107, 53, 0.4);
+        }
+        
+        /* COMPONENTES REUTILIZABLES */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--neon-blue), var(--electric-purple));
+            color: var(--deep-navy);
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 242, 255, 0.3);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: var(--neon-blue);
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            border: 2px solid var(--neon-blue);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(0, 242, 255, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .section-padding {
+            padding: 6rem 1.5rem;
+        }
+        
+        @media (min-width: 768px) {
+            .section-padding {
+                padding: 8rem 2rem;
+            }
+        }
+        
+        /* HERO SECTION */
+        .hero-gradient {
+            background: radial-gradient(circle at 20% 50%, rgba(0, 242, 255, 0.15) 0%, transparent 50%),
+                       radial-gradient(circle at 80% 20%, rgba(157, 78, 221, 0.1) 0%, transparent 50%);
+        }
+        
+        /* GALLERY */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .art-card {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #0f172a;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+        
+        .art-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--neon-blue);
+            box-shadow: 0 20px 40px rgba(0, 242, 255, 0.15);
+        }
+        
+        .art-card img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+        
+        .art-card:hover img {
+            transform: scale(1.05);
+        }
+        
+        .art-card-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(10, 15, 31, 0.9);
+            color: var(--neon-blue);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            backdrop-filter: blur(4px);
+        }
+        
+        /* TESTIMONIALS */
+        .testimonial-card {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+        }
+        
+        /* CURSOR PERSONALIZADO (OPCIONAL) */
+        .custom-cursor-enabled #cursor-dot {
+            width: 6px;
+            height: 6px;
+            background-color: var(--neon-blue);
+        }
+        
+        .custom-cursor-enabled #cursor-ring {
+            width: 30px;
+            height: 30px;
+            border: 2px solid var(--neon-blue);
+        }
+        
+        /* LOADING STATES */
+        .skeleton {
+            background: linear-gradient(90deg, #0f172a 25%, #1e293b 50%, #0f172a 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+        
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 3.5rem;
+            }
+            
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+        
+        /* PRINT STYLES */
+        @media print {
+            .no-print {
+                display: none;
+            }
+            
+            body {
+                color: #000;
+                background: #fff;
+            }
+        }
+    </style>
+</head>
+<body class="custom-cursor-enabled">
+    <!-- CURSOR PERSONALIZADO -->
+    <div id="cursor-dot" class="fixed w-1.5 h-1.5 bg-[var(--neon-blue)] rounded-full pointer-events-none z-50 transition-transform duration-100"></div>
+    <div id="cursor-ring" class="fixed w-8 h-8 border-2 border-[var(--neon-blue)] rounded-full pointer-events-none z-40 transition-all duration-200"></div>
+    
+    <!-- LIGHTBOX -->
+    <div id="lightbox" class="fixed inset-0 bg-black/95 z-[9999] hidden items-center justify-center p-4">
+        <button onclick="closeLightbox()" class="absolute top-6 right-6 text-white text-3xl hover:text-[var(--neon-blue)] transition-colors" aria-label="Cerrar">
+            &times;
+        </button>
+        <div class="relative max-w-6xl max-h-[90vh]">
+            <img id="lightbox-image" alt="Vista ampliada" class="w-full h-full object-contain rounded-lg">
+            <div id="lightbox-info" class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 to-transparent p-6 text-white">
+                <h3 id="lightbox-title" class="text-xl font-bold"></h3>
+                <p id="lightbox-description" class="text-sm opacity-80"></p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- NAVEGACIÓN -->
+    <nav class="fixed top-0 left-0 right-0 z-40 bg-[var(--deep-navy)]/90 backdrop-blur-md border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- LOGO -->
+                <a href="#home" class="flex items-center space-x-2">
+                    <span class="font-impact text-2xl text-white">PABLOR</span>
+                    <span class="text-xs text-[var(--neon-blue)] font-bold tracking-widest uppercase">/ BLOR</span>
+                </a>
+                
+                <!-- MENÚ DESKTOP -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#portfolio" class="text-sm font-semibold text-gray-300 hover:text-[var(--neon-blue)] transition-colors">Portafolio</a>
+                    <a href="#proyecto-ia" class="text-sm font-semibold text-gray-300 hover:text-[var(--neon-blue)] transition-colors">Proyecto IA</a>
+                    <a href="#servicios" class="text-sm font-semibold text-gray-300 hover:text-[var(--neon-blue)] transition-colors">Servicios</a>
+                    <a href="#sobre-mi" class="text-sm font-semibold text-gray-300 hover:text-[var(--neon-blue)] transition-colors">Sobre mí</a>
+                    <a href="presentacion.html" target="_blank" class="text-sm font-semibold text-gray-300 hover:text-[var(--neon-blue)] transition-colors">Presentación</a>
+                    <a href="#contacto" class="text-sm font-semibold text-gray-300 hover:text-[var(--neon-blue)] transition-colors">Contacto</a>
+                    <a href="https://wa.me/573167083370" target="_blank" class="btn-primary">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.76.982.998-3.675-.236-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.9 6.994c-.004 5.45-4.438 9.88-9.888 9.88m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.333.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.304-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.333 11.893-11.893 0-3.18-1.24-6.162-3.495-8.411"/>
+                        </svg>
+                        WhatsApp
+                    </a>
+                </div>
+                
+                <!-- BOTÓN MÓVIL -->
+                <button id="menu-toggle" class="md:hidden text-gray-300 hover:text-[var(--neon-blue)]">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- MENÚ MÓVIL -->
+            <div id="mobile-menu" class="md:hidden hidden py-4 space-y-4 border-t border-white/5">
+                <a href="#portfolio" class="block text-sm font-semibold text-gray-300 hover:text-[var(--neon-blue)] transition-colors">Portafolio</a>
+                <a href="#proyecto-ia" class="block text-sm font-semibold text-gray-300 hover:text-[var(--neon-blue)] transition-colors">Proyecto IA</a>
+                <a href="#servicios" class="block text-sm font-semibold text-gray-300 hover:text-[var(--neon-blue)] transition-colors">Servicios</a>
+                <a href="#sobre-mi" class="block text-sm font-semibold text-gray-300 hover:text-[var(--neon-blue)] transition-colors">Sobre mí</a>
+                <a href="presentacion.html" target="_blank" class="block text-sm font-semibold text-gray-300 hover:text-[var(--neon-blue)] transition-colors">Presentación</a>
+                <a href="#contacto" class="block text-sm font-semibold text-gray-300 hover:text-[var(--neon-blue)] transition-colors">Contacto</a>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- HERO SECTION -->
+    <section id="home" class="section-padding hero-gradient relative overflow-hidden">
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="flex items-center gap-3 mb-8">
+                <div class="w-12 h-0.5 bg-gradient-to-r from-[var(--neon-blue)] to-transparent"></div>
+                <span class="text-xs tracking-[0.3em] text-[var(--neon-blue)] uppercase font-bold">Maestro en Artes Plásticas</span>
+            </div>
+            
+            <h1 class="font-impact text-6xl md:text-8xl lg:text-9xl leading-none mb-8">
+                <span class="block text-white">ARTE</span>
+                <span class="block animate-neon-flicker" style="color: #ff6b35;">+ URBANO</span>
+                <span class="block text-[var(--neon-blue)]">× TECH</span>
+            </h1>
+            
+            <div class="max-w-2xl mb-12">
+                <p class="text-lg md:text-xl text-gray-300 leading-relaxed">
+                    Fusiono la precisión académica con la energía urbana. Como <strong class="text-white">PABLOR</strong> en lo digital y <strong class="text-[var(--neon-blue)]">BLOR</strong> en las calles, creo puentes entre el arte tradicional y las nuevas tecnologías.
+                </p>
+            </div>
+            
+            <div class="flex flex-wrap gap-4">
+                <a href="#portfolio" class="btn-primary">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                    Ver Portafolio
+                </a>
+                <a href="#contacto" class="btn-secondary">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                    </svg>
+                    Consultar proyecto
+                </a>
+                <a href="presentacion.html" target="_blank" class="btn-primary">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16v12H4zM8 10l4 4 4-4"></path>
+                    </svg>
+                    Ver presentación
+                </a>
+            </div>
+            
+            <!-- ESTADÍSTICAS DE IMPACTO -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-20 pt-10 border-t border-white/10">
+                <div class="text-center">
+                    <div class="font-impact text-3xl md:text-4xl text-[var(--neon-blue)] mb-2">50+</div>
+                    <div class="text-xs uppercase tracking-widest text-gray-400">Murales</div>
+                </div>
+                <div class="text-center">
+                    <div class="font-impact text-3xl md:text-4xl text-[var(--neon-blue)] mb-2">10+</div>
+                    <div class="text-xs uppercase tracking-widest text-gray-400">Años Experiencia</div>
+                </div>
+                <div class="text-center">
+                    <div class="font-impact text-3xl md:text-4xl text-[var(--neon-blue)] mb-2">3</div>
+                    <div class="text-xs uppercase tracking-widest text-gray-400">Disciplinas</div>
+                </div>
+                <div class="text-center">
+                    <div class="font-impact text-3xl md:text-4lit text-[var(--neon-blue)] mb-2">100%</div>
+                    <div class="text-xs uppercase tracking-widest text-gray-400">Personalizado</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ELEMENTOS DECORATIVOS -->
+        <div class="absolute top-20 right-20 w-64 h-64 bg-[var(--neon-blue)]/10 rounded-full blur-3xl animate-pulse"></div>
+        <div class="absolute bottom-20 left-20 w-96 h-96 bg-[var(--electric-purple)]/10 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s"></div>
+    </section>
+    
+    <!-- PORTAFOLIO -->
+    <section id="portfolio" class="section-padding bg-black/30">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="font-impact text-4xl md:text-5xl mb-4">PORTAFOLIO <span class="text-[var(--neon-blue)]">HÍBRIDO</span></h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">Explora las tres dimensiones de mi práctica artística: la calle, lo digital y lo académico.</p>
+            </div>
+            
+            <!-- FILTROS -->
+            <div class="flex flex-wrap justify-center gap-3 mb-12">
+                <button onclick="filterGallery('all')" class="px-6 py-3 rounded-full bg-[var(--neon-blue)] text-[var(--deep-navy)] font-bold text-sm uppercase tracking-widest transition-all hover:scale-105 active">TODO</button>
+                <button onclick="filterGallery('urbano')" class="px-6 py-3 rounded-full bg-white/5 text-white font-bold text-sm uppercase tracking-widest border border-white/10 transition-all hover:scale-105 hover:bg-white/10">BLOR (URBANO)</button>
+                <button onclick="filterGallery('digital')" class="px-6 py-3 rounded-full bg-white/5 text-white font-bold text-sm uppercase tracking-widest border border-white/10 transition-all hover:scale-105 hover:bg-white/10">DIGITAL</button>
+                <button onclick="filterGallery('academico')" class="px-6 py-3 rounded-full bg-white/5 text-white font-bold text-sm uppercase tracking-widest border border-white/10 transition-all hover:scale-105 hover:bg-white/10">ACADÉMICO</button>
+                <button onclick="filterGallery('proceso')" class="px-6 py-3 rounded-full bg-white/5 text-white font-bold text-sm uppercase tracking-widest border border-white/10 transition-all hover:scale-105 hover:bg-white/10">PROCESO</button>
+            </div>
+            
+            <!-- GALERÍA -->
+            <div class="gallery-grid" id="gallery-container">
+                <!-- ARGELIA -->
+                <div class="art-card urbano" onclick="openLightbox('images/arte_urbano/argelia.jpg', 'Mural Argelia', 'Intervención urbana en el barrio Argelia, Medellín. Técnica mixta sobre muro. 2023')">
+                    <div class="art-card-badge">BLOR</div>
+                    <img src="images/arte_urbano/argelia.webp" srcset="images/arte_urbano/argelia_opt.jpg 1x, images/arte_urbano/argelia.webp 1x" alt="Mural Argelia - Intervención urbana en Medellín" loading="lazy">
+                    <div class="p-4">
+                        <h3 class="font-bold text-white mb-1">Mural Argelia</h3>
+                        <p class="text-xs text-gray-400">Argelia, 2023 • Técnica mixta</p>
+                    </div>
+                </div>
+                
+                <!-- BABILLA ALTAMIRA -->
+                <div class="art-card urbano" onclick="openLightbox('images/arte_urbano/babilla_altamira.jpg', 'Mural Babilla Altamira', 'Obra monumental en Altamira representando la fauna local. 30m². 2024')">
+                    <div class="art-card-badge">BLOR</div>
+                    <img src="images/arte_urbano/babilla_altamira.webp" srcset="images/arte_urbano/babilla_altamira_opt.jpg 1x, images/arte_urbano/babilla_altamira.webp 1x" alt="Mural Babilla Altamira - Obra monumental" loading="lazy">
+                    <div class="p-4">
+                        <h3 class="font-bold text-white mb-1">Babilla Altamira</h3>
+                        <p class="text-xs text-gray-400">30m² • 2024 • Spray y acrílico</p>
+                    </div>
+                </div>
+                
+                <!-- GUARDIÁN SEMILLA -->
+                <div class="art-card digital" onclick="openLightbox('images/digital/predigital_guardian_semilla.jpg', 'Guardián de Semilla', 'Ilustración digital explorando la conexión entre naturaleza y tecnología. Serie Raíces Digitales. 2024')">
+                    <div class="art-card-badge">DIGITAL</div>
+                    <img src="images/digital/predigital_guardian_semilla.webp" srcset="images/digital/predigital_guardian_semilla_opt.jpg 1x, images/digital/predigital_guardian_semilla.webp 1x" alt="Guardián de Semilla - Ilustración digital" loading="lazy">
+                    <div class="p-4">
+                        <h3 class="font-bold text-white mb-1">Guardián de Semilla</h3>
+                        <p class="text-xs text-gray-400">Digital • Procreate • 2024</p>
+                    </div>
+                </div>
+                
+                <!-- SOBERANÍA -->
+                <div class="art-card urbano" onclick="openLightbox('images/arte_urbano/soberania.jpg', 'Mural Soberanía', 'Exploración de identidad cultural y resistencia. Proyecto comunitario.2023')">
+                    <div class="art-card-badge">BLOR</div>
+                    <img src="images/arte_urbano/soberania.webp" srcset="images/arte_urbano/soberania_opt.jpg 1x, images/arte_urbano/soberania.webp 1x" alt="Mural Soberanía - Proyecto comunitario" loading="lazy">
+                    <div class="p-4">
+                        <h3 class="font-bold text-white mb-1">Soberanía</
+                        <p class="text-xs text-gray-400">Proyecto comunitario • 2023</p>
+                    </div>
+                </div>
+                
+                <!-- CAUCA -->
+                <div class="art-card academico" onclick="openLightbox('images/arte_urbano/cauca.jpeg', 'Estudio Cauca', 'Estudio académico de figura humana. Óleo sobre lienzo. 2022')">
+                    <div class="art-card-badge">ACADÉMICO</div>
+                    <img src="images/arte_urbano/cauca.webp" srcset="images/arte_urbano/cauca_opt.jpg 1x, images/arte_urbano/cauca.webp 1x" alt="Estudio Cauca - Óleo sobre lienzo" loading="lazy">
+                    <div class="p-4">
+                        <h3 class="font-bold text-white mb-1">Cauca</h3>
+                        <p class="text-xs text-gray-400">Mural acrilico l• 80x60cm • 2022</p>
+                    </div>
+                </div>
+                
+                <!-- IDENTIDAD CULTURAL -->
+                <div class="art-card urbano" onclick="openLightbox('images/arte_urbano/mural_identidad_cultural_2024.jpg', 'Identidad Cultural 2024', 'Mural sobre patrimonio cultural colombiano. Técnica: aerosol y pintura acrílica. 2024')">
+                    <div class="art-card-badge">BLOR</div>
+                    <img src="images/arte_urbano/mural_identidad_cultural_2024.webp" srcset="images/arte_urbano/mural_identidad_cultural_2024_opt.jpg 1x, images/arte_urbano/mural_identidad_cultural_2024.webp 1x" alt="Mural Identidad Cultural 2024" loading="lazy">
+                    <div class="p-4">
+                        <h3 class="font-bold text-white mb-1">Identidad Cultural</h3>
+                        <p class="text-xs text-gray-400">2024 • Patrimonio cultural</p>
+                    </div>
+                </div>
+                
+                <!-- VIDEO PROCESO -->
+                <div class="art-card proceso" onclick="openVideoModal('images/arte_urbano/video_proceso_mural_2024.mp4')">
+                    <div class="art-card-badge">PROCESO</div>
+                    <div class="relative h-full">
+                        <img src="images/arte_urbano/video_thumbnail.jpg" srcset="images/arte_urbano/video_thumbnail.jpg 1x" alt="Proceso creación mural - Timelapse" loading="lazy">
+                        <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
+                            <div class="w-16 h-16 bg-[var(--neon-blue)]/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+                                <svg class="w-8 h-8 text-[var(--neon-blue)]" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M8 5v14l11-7z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-bold text-white mb-1">Proceso Creativo</h3>
+                        <p class="text-xs text-gray-400">Timelapse • Del boceto al mural</p>
+                    </div>
+                </div>
+                
+                <!-- PRÓXIMAMENTE -->
+                <div class="art-card opacity-40 border-2 border-dashed border-white/20 flex flex-col items-center justify-center hover:transform-none">
+                    <svg class="w-12 h-12 text-white/30 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                    </svg>
+                    <span class="text-xs tracking-[0.3em] uppercase text-white/50">Próximamente</span>
+                    <p class="text-xs text-white/30 mt-2 text-center px-4">Nuevas obras en proceso</p>
+                </div>
+            </div>
+            
+            <!-- CTA GALERÍA -->
+            <div class="text-center mt-16">
+                <p class="text-gray-400 mb-6">¿Interesado en ver más? Todo mi portafolio completo disponible para clientes y colaboradores.</p>
+                <a href="#contacto" class="btn-primary">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                    </svg>
+                    Solicitar Portafolio Completo
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- SERVICIOS -->
+    <section id="servicios" class="section-padding bg-gradient-to-b from-black/30 to-[var(--deep-navy)]">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="font-impact text-4xl md:text-5xl mb-4">SERVICIOS <span class="text-[var(--neon-blue)]">PROFESIONALES</span></h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">Desde murales corporativos hasta experiencias educativas híbridas.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- SERVICIO 1 -->
+                <div class="testimonial-card hover:border-[var(--neon-blue)]/30 transition-all group">
+                    <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-[var(--neon-blue)] to-[var(--electric-purple)] flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">Muralismo Corporativo</h3>
+                    <ul class="space-y-3 text-gray-300 text-sm mb-6">
+                        <li class="flex items-start gap-2">
+                            <svg class="w-4 h-4 text-[var(--neon-blue)] mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span>Identidad visual para empresas</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <svg class="w-4 h-4 text-[var(--neon-blue)] mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span>Arte para espacios públicos y privados</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <svg class="w-4 h-4 text-[var(--neon-blue)] mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span>Proyectos a escala monumental</span>
+                        </li>
+                    </ul>
+                    <a href="#contacto" class="text-[var(--neon-blue)] text-sm font-semibold inline-flex items-center gap-2 group-hover:gap-3 transition-all">
+                        Solicitar presupuesto
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                        </svg>
+                    </a>
+                </div>
+                
+                <!-- SERVICIO 2 -->
+                <div class="testimonial-card hover:border-[var(--neon-blue)]/30 transition-all group">
+                    <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-[var(--neon-blue)] to-[var(--electric-purple)] flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">Arte Digital & NFTs</h3>
+                    <ul class="space-y-3 text-gray-300 text-sm mb-6">
+                        <li class="flex items-start gap-2">
+                            <svg class="w-4 h-4 text-[var(--neon-blue)] mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span>Ilustración digital personalizada</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <svg class="w-4 h-4 text-[var(--neon-blue)] mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span>Creación y asesoría en NFTs</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <svg class="w-4 h-4 text-[var(--neon-blue)] mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span>Animación y arte interactivo</span>
+                        </li>
+                    </ul>
+                    <a href="#contacto" class="text-[var(--neon-blue)] text-sm font-semibold inline-flex items-center gap-2 group-hover:gap-3 transition-all">
+                        Explorar opciones
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                        </svg>
+                    </a>
+                </div>
+                
+                <!-- SERVICIO 3 -->
+                <div class="testimonial-card hover:border-[var(--neon-blue)]/30 transition-all group">
+                    <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-[var(--neon-blue)] to-[var(--electric-purple)] flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">Talleres & Educación</h3>
+                    <ul class="space-y-3 text-gray-300 text-sm mb-6">
+                        <li class="flex items-start gap-2">
+                            <svg class="w-4 h-4 text-[var(--neon-blue)] mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span>Talleres de muralismo urbano</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <svg class="w-4 h-4 text-[var(--neon-blue)] mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span>Clases de arte + tecnología</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <svg class="w-4 h-4 text-[var(--neon-blue)] mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span>Charlas para instituciones educativas</span>
+                        </li>
+                    </ul>
+                    <a href="#contacto" class="text-[var(--neon-blue)] text-sm font-semibold inline-flex items-center gap-2 group-hover:gap-3 transition-all">
+                        Programar taller
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- PROYECTO INTEGRADOR DE IA -->
+    <section id="proyecto-ia" class="section-padding bg-[#111827] border-y border-[var(--neon-blue)]/20">
+        <div class="max-w-7xl mx-auto">
+            <div class="max-w-3xl mb-12">
+                <p class="text-xs tracking-[0.3em] text-[var(--neon-orange)] uppercase font-bold mb-4">Proyecto integrador de IA</p>
+                <h2 class="font-impact text-4xl md:text-5xl mb-5">BLOR ESTUDIO <span class="text-[var(--neon-blue)]">CREATIVO</span></h2>
+                <p class="text-xl text-gray-300">Arte que conecta territorio, tecnología y aprendizaje.</p>
+                <p class="text-gray-400 mt-4">Solución digital para descubrir obras, orientar solicitudes y convertir una idea artística en un proyecto viable.</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="border-l-2 border-[var(--neon-orange)] pl-5">
+                    <p class="text-xs uppercase tracking-widest text-[var(--neon-orange)] mb-2">Identidad</p>
+                    <h3 class="text-xl font-bold mb-2">PABLOR/BLOR</h3>
+                    <p class="text-sm text-gray-400">Slogan: Arte que conecta mundos.</p>
+                </div>
+                <div class="border-l-2 border-[var(--neon-blue)] pl-5">
+                    <p class="text-xs uppercase tracking-widest text-[var(--neon-blue)] mb-2">Misión</p>
+                    <p class="text-sm text-gray-300">Acercar el arte urbano y digital a personas, marcas e instituciones mediante experiencias accesibles y personalizadas.</p>
+                </div>
+                <div class="border-l-2 border-[var(--warning)] pl-5">
+                    <p class="text-xs uppercase tracking-widest text-[var(--warning)] mb-2">Visión</p>
+                    <p class="text-sm text-gray-300">Ser un estudio referente en Latinoamérica por unir creación artística, educación y tecnología responsable.</p>
+                </div>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8 mt-12">
+                <div class="bg-black/30 p-6 rounded-xl border border-white/10">
+                    <h3 class="text-xl font-bold mb-4">Componentes demostrables</h3>
+                    <ul class="space-y-3 text-sm text-gray-300">
+                        <li><span class="text-[var(--neon-blue)]">01</span> IA generativa: textos, imágenes, video y código asistidos.</li>
+                        <li><span class="text-[var(--neon-blue)]">02</span> Chatbot IA local: responde sobre obras, servicios, empresa y contacto.</li>
+                        <li><span class="text-[var(--neon-blue)]">03</span> Automatización: formulario → registro local → confirmación y WhatsApp.</li>
+                        <li><span class="text-[var(--neon-blue)]">04</span> Multimedia: timelapse del proceso creativo integrado en el portafolio.</li>
+                    </ul>
+                </div>
+                <div class="bg-black/30 p-6 rounded-xl border border-white/10">
+                    <h3 class="text-xl font-bold mb-4">Modelo de Machine Learning</h3>
+                    <p class="text-sm text-gray-300 mb-5">Clasificación de intención con <strong>TF-IDF + k-NN (KNeighborsClassifier, k=3)</strong> sobre un dataset de 12 solicitudes etiquetadas en mural, arte digital y taller.</p>
+                    <a href="ml_model.html" class="btn-orange">Abrir demo de dataset, modelo y gráfica</a>
+                    <div class="mt-4">
+                        <a href="presentacion.html" target="_blank" class="text-xs uppercase tracking-[0.2em] text-[var(--neon-blue)] hover:text-white transition-colors">Ver presentación PechaKucha</a>
+                    </div>
+                    <div class="mt-4">
+                        <a href="ml_model.html" class="text-xs uppercase tracking-[0.2em] text-[var(--neon-blue)] hover:text-white transition-colors">Ver clasificador IA</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SOBRE MÍ -->
+    <section id="sobre-mi" class="section-padding bg-gradient-to-b from-[var(--deep-navy)] to-black">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="font-impact text-4xl md:text-5xl mb-6">
+                        EL <span class="text-[var(--neon-blue)]">ARTISTA</span><br>
+                        DETRÁS DE LA OBRA
+                    </h2>
+                    
+                    <div class="space-y-4 text-gray-300">
+                        <p>
+                            Con más de una década de experiencia, navego entre el rigor académico de las <strong>Artes Plásticas</strong> y la libertad expresiva del <strong>arte urbano</strong>.
+                        </p>
+                        <p>
+                            Como <strong>PABLOR</strong>, investigo las intersecciones entre arte y tecnología. Como <strong>BLOR</strong>, transformo espacios públicos en narrativas visuales.
+                        </p>
+                        <p>
+                            Mi práctica es un puente entre la tradición pictórica y las herramientas digitales contemporáneas, siempre con un pie en la academia y otro en la calle.
+                        </p>
+                    </div>
+                    
+                    <!-- CREDENCIALES -->
+                    <div class="grid grid-cols-2 gap-4 mt-8">
+                        <div class="bg-white/5 p-4 rounded-lg">
+                            <div class="text-2xl font-impact text-[var(--neon-blue)] mb-1">MFA</div>
+                            <div class="text-xs uppercase tracking-widest text-gray-400">Maestría en Artes</div>
+                        </div>
+                        <div class="bg-white/5 p-4 rounded-lg">
+                            <div class="text-2xl font-impact text-[var(--neon-blue)] mb-1">10+</div>
+                            <div class="text-xs uppercase tracking-widest text-gray-400">Años de Trayectoria</div>
+                        </div>
+                    </div>
+                    
+                    <a href="images/arte_urbano/Dossier_artistico_profesional.pdf" download class="btn-secondary mt-8 inline-flex items-center">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        Descargar Dossier Profesional
+                    </a>
+                </div>
+                
+                <!-- VIDEO PROCESO -->
+                <div class="relative">
+                    <div class="relative rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
+                        <video class="w-full" autoplay muted loop playsinline poster="images/arte_urbano/video_thumbnail.jpg">
+                            <source src="images/arte_urbano/video_proceso_mural_2024.mp4" type="video/mp4">
+                            Tu navegador no soporta el video.
+                        </video>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <div class="absolute bottom-6 left-6">
+                            <div class="text-xs uppercase tracking-widest text-white/80">Proceso creativo en acción</div>
+                            <div class="text-sm font-semibold text-white">Del concepto a la pared</div>
+                        </div>
+                    </div>
+                    
+                    <!-- ELEMENTOS DECORATIVOS -->
+                    <div class="absolute -top-4 -right-4 w-32 h-32 bg-[var(--electric-purple)]/20 rounded-full blur-2xl"></div>
+                    <div class="absolute -bottom-4 -left-4 w-24 h-24 bg-[var(--neon-blue)]/20 rounded-full blur-2xl"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- CONTACTO -->
+    <section id="contacto" class="section-padding bg-gradient-to-b from-black to-[var(--deep-navy)]">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-2 gap-12">
+                <div>
+                    <h2 class="font-impact text-4xl md:text-5xl mb-6">
+                        TRABAJEMOS <span class="text-[var(--neon-blue)]">JUNTOS</span>
+                    </h2>
+                    <p class="text-gray-300 mb-8">
+                        Ya sea para un mural corporativo, una obra digital personalizada, o una charla académica, estoy aquí para hacer realidad tu proyecto.
+                    </p>
+                    
+                    <!-- INFORMACIÓN DE CONTACTO -->
+                    <div class="space-y-6">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-full bg-gradient-to-br from-[var(--neon-blue)] to-[var(--electric-purple)] flex items-center justify-center">
+                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="text-xs uppercase tracking-widest text-gray-400">Email</div>
+                                <a href="mailto:prbc1199@gmail.com" class="text-lg font-semibold hover:text-[var(--neon-blue)] transition-colors">prbc1199@gmail.com</a>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-full bg-gradient-to-br from-[var(--neon-blue)] to-[var(--electric-purple)] flex items-center justify-center">
+                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="text-xs uppercase tracking-widest text-gray-400">WhatsApp</div>
+                                <a href="https://wa.me/573167083370" target="_blank" class="text-lg font-semibold hover:text-[var(--neon-blue)] transition-colors">+57 316 708 3370</a>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-full bg-gradient-to-br from-[var(--neon-blue)] to-[var(--electric-purple)] flex items-center justify-center">
+                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="text-xs uppercase tracking-widest text-gray-400">Ubicación</div>
+                                <div class="text-lg font-semibold">Medellín, Colombia</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- REDES SOCIALES -->
+                    <div class="mt-12">
+                        <h3 class="text-lg font-bold mb-6">Conecta en redes</h3>
+                        <div class="flex gap-4">
+                            <a href="https://instagram.com/tuusuario" target="_blank" class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center hover:bg-[var(--neon-blue)]/20 transition-colors">
+                                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                                </svg>
+                            </a>
+                            <a href="https://behance.net/tuusuario" target="_blank" class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center hover:bg-[var(--neon-blue)]/20 transition-colors">
+                                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M22 7h-7V5h7v2zm1.726 10c-.442 1.297-2.029 3-5.101 3-3.074 0-5.564-1.729-5.564-5.675 0-3.91 2.325-5.92 5.466-5.92 3.082 0 4.964 1.782 5.375 4.426.078.506.109 1.188.095 2.14H15.97c.13 3.211 3.483 3.312 4.588 2.029h3.168zm-7.686-4h4.965c-.105-1.547-1.136-2.219-2.477-2.219-1.466 0-2.277.768-2.488 2.219zm-9.574 6.988H0V5.021h7.457c5.209.204 5.891 4.181 5.836 6.5-.017 1.966-.963 4.76-5.839 4.467zM7.896 7.151H3.658v3.984h3.989c3.181-.014 3.535-3.984.249-3.984zm.527 6.117H3.658v4.116h4.367c3.324-.004 3.914-4.116.408-4.116z"/>
+                                </svg>
+                            </a>
+                            <a href="https://opensea.io/tuusuario" target="_blank" class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center hover:bg-[var(--neon-blue)]/20 transition-colors">
+                                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                                </svg>
+                            </a>
+                            <a href="https://linkedin.com/in/tuusuario" target="_blank" class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center hover:bg-[var(--neon-blue)]/20 transition-colors">
+                                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M20 3H4a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1zM8.339 18.337H5.667v-8.59h2.672v8.59zM7.003 8.574a1.548 1.548 0 1 1 0-3.096 1.548 1.548 0 0 1 0 3.096zm11.335 9.763h-2.669V14.16c0-.996-.018-2.277-1.388-2.277-1.39 0-1.601 1.086-1.601 2.207v4.248h-2.667v-8.59h2.56v1.174h.037c.355-.675 1.227-1.387 2.524-1.387 2.704 0 3.203 1.778 3.203 4.092v4.71z"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- FORMULARIO DE CONTACTO -->
+                <div class="bg-gradient-to-b from-white/5 to-transparent rounded-2xl p-8 border border-white/10">
+                    <h3 class="text-2xl font-bold mb-6">Envía tu propuesta</h3>
+                    <form id="contact-form" class="space-y-6">
+                        <div>
+                            <label for="name" class="block text-sm font-semibold mb-2">Nombre completo</label>
+                            <input type="text" id="name" required class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 focus:outline-none focus:border-[var(--neon-blue)] transition-colors">
+                        </div>
+                        
+                        <div>
+                            <label for="email" class="block text-sm font-semibold mb-2">Email</label>
+                            <input type="email" id="email" required class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 focus:outline-none focus:border-[var(--neon-blue)] transition-colors">
+                        </div>
+                        
+                        <div>
+                            <label for="project-type" class="block text-sm font-semibold mb-2">Tipo de proyecto</label>
+                            <select id="project-type" class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 focus:outline-none focus:border-[var(--neon-blue)] transition-colors">
+                                <option value="">Selecciona una opción</option>
+                                <option value="mural">Mural/Muralismo</option>
+                                <option value="digital">Arte digital/Ilustración</option>
+                                <option value="nft">NFT/Arte digital coleccionable</option>
+                                <option value="taller">Taller/Charla educativa</option>
+                                <option value="colaboracion">Colaboración artística</option>
+                                <option value="otro">Otro</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label for="budget" class="block text-sm font-semibold mb-2">Presupuesto aproximado</label>
+                            <select id="budget" class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 focus:outline-none focus:border-[var(--neon-blue)] transition-colors">
+                                <option value="">Selecciona un rango</option>
+                                <option value="1-3">$1M - $3M COP</option>
+                                <option value="3-5">$3M - $5M COP</option>
+                                <option value="5-10">$5M - $10M COP</option>
+                                <option value="10+">Más de $10M COP</option>
+                                <option value="por-definir">Por definir</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label for="message" class="block text-sm font-semibold mb-2">Descripción del proyecto</label>
+                            <textarea id="message" rows="5" required class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 focus:outline-none focus:border-[var(--neon-blue)] transition-colors" placeholder="Cuéntame sobre tu idea, dimensiones, ubicación, fechas estimadas, etc."></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn-primary w-full">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                            </svg>
+                            Enviar propuesta
+                        </button>
+                    </form>
+                    <div id="automation-status" class="hidden mt-5 border border-[var(--neon-blue)]/30 bg-[var(--neon-blue)]/10 p-4 text-sm text-gray-200" role="status"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- FOOTER -->
+    <footer class="py-12 px-6 border-t border-white/5 bg-black/60">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-3 gap-8 mb-12">
+                <div>
+                    <h2 class="font-impact text-4xl mb-4">PABLOR<span class="text-[var(--neon-blue)]">/BLOR</span></h2>
+                    <p class="text-sm text-gray-400 uppercase tracking-widest">Arte • Tecnología • Educación • Urbano</p>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Navegación rápida</h3>
+                    <div class="space-y-2">
+                        <a href="#portfolio" class="block text-gray-400 hover:text-[var(--neon-blue)] transition-colors">Portafolio</a>
+                        <a href="#servicios" class="block text-gray-400 hover:text-[var(--neon-blue)] transition-colors">Servicios</a>
+                        <a href="#proyecto-ia" class="block text-gray-400 hover:text-[var(--neon-blue)] transition-colors">Proyecto IA</a>
+                        <a href="#contacto" class="block text-gray-400 hover:text-[var(--neon-blue)] transition-colors">Contacto</a>
+                        <a href="/admin.html" class="block text-xs text-gray-500 hover:text-gray-400 transition-colors" title="Panel privado">⚙️</a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Newsletter</h3>
+                    <p class="text-sm text-gray-400 mb-4">Recibe actualizaciones sobre nuevos proyectos, exposiciones y talleres.</p>
+                    <form class="flex gap-2">
+                        <input type="email" placeholder="tu@email.com" class="flex-1 bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-[var(--neon-blue)]">
+                        <button type="submit" class="px-4 py-2 bg-[var(--neon-blue)] text-[var(--deep-navy)] rounded-lg font-semibold text-sm hover:bg-[var(--accent)] transition-colors">Suscribir</button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="text-sm text-gray-500">
+                    © 2024 PABLOR Studio • Medellín, Colombia • Todos los derechos reservados
+                </div>
+                
+                <div class="text-xs text-gray-500 uppercase tracking-widest">
+                    <span class="text-[var(--warning)] animate-pulse">●</span> Disponible para proyectos nacionales e internacionales
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- SCRIPTS -->
+    <script>
+        // ========== CONFIGURACIÓN INICIAL ==========
+        const config = {
+            cursorEnabled: true,
+            analyticsEnabled: true
+        };
+        
+        // Desactivar cursor en dispositivos táctiles
+        if ('ontouchstart' in window) {
+            config.cursorEnabled = false;
+            document.body.classList.remove('custom-cursor-enabled');
+        }
+        
+        // ========== CURSOR PERSONALIZADO ==========
+        if (config.cursorEnabled) {
+            const cursorDot = document.getElementById('cursor-dot');
+            const cursorRing = document.getElementById('cursor-ring');
+            
+            document.addEventListener('mousemove', (e) => {
+                cursorDot.style.left = e.clientX + 'px';
+                cursorDot.style.top = e.clientY + 'px';
+                
+                setTimeout(() => {
+                    cursorRing.style.left = (e.clientX - 15) + 'px';
+                    cursorRing.style.top = (e.clientY - 15) + 'px';
+                }, 50);
+            });
+            
+            // Efectos hover
+            document.querySelectorAll('a, button, .art-card').forEach(el => {
+                el.addEventListener('mouseenter', () => {
+                    cursorRing.style.transform = 'scale(1.5)';
+                    cursorRing.style.backgroundColor = 'rgba(0, 242, 255, 0.1)';
+                });
+                
+                el.addEventListener('mouseleave', () => {
+                    cursorRing.style.transform = 'scale(1)';
+                    cursorRing.style.backgroundColor = 'transparent';
+                });
+            });
+        }
+        
+        // ========== MENÚ MÓVIL ==========
+        document.getElementById('menu-toggle').addEventListener('click', () => {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+        
+        // Cerrar menú al hacer clic en enlace
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('mobile-menu').classList.add('hidden');
+            });
+        });
+        
+        // ========== FILTRO GALERÍA ==========
+        function filterGallery(category) {
+            const cards = document.querySelectorAll('.art-card');
+            const buttons = document.querySelectorAll('#portfolio button');
+            
+            // Actualizar botones activos
+            buttons.forEach(btn => {
+                btn.classList.remove('bg-[var(--neon-blue)]', 'text-[var(--deep-navy)]');
+                btn.classList.add('bg-white/5', 'text-white');
+                if (btn.textContent.trim() === (category === 'all' ? 'TODO' : category.toUpperCase())) {
+                    btn.classList.remove('bg-white/5', 'text-white');
+                    btn.classList.add('bg-[var(--neon-blue)]', 'text-[var(--deep-navy)]');
+                }
+            });
+            
+            // Filtrar cards
+            cards.forEach(card => {
+                if (category === 'all' || card.classList.contains(category)) {
+                    card.style.display = 'block';
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, 10);
+                } else {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(10px)';
+                    setTimeout(() => {
+                        card.style.display = 'none';
+                    }, 300);
+                }
+            });
+            
+            // Analytics (simulado)
+            if (config.analyticsEnabled) {
+                console.log(`Filtro activado: ${category}`);
+            }
+        }
+        
+        // ========== LIGHTBOX ==========
+        function openLightbox(imageSrc, title, description) {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImage = document.getElementById('lightbox-image');
+            const lightboxTitle = document.getElementById('lightbox-title');
+            const lightboxDescription = document.getElementById('lightbox-description');
+            
+            lightboxImage.src = imageSrc;
+            lightboxImage.alt = title;
+            lightboxTitle.textContent = title;
+            lightboxDescription.textContent = description;
+            
+            lightbox.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            
+            // Analytics
+            if (config.analyticsEnabled) {
+                console.log(`Lightbox abierto: ${title}`);
+            }
+        }
+        
+        function closeLightbox() {
+            document.getElementById('lightbox').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Cerrar lightbox con ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeLightbox();
+            }
+        });
+        
+        // ========== VIDEO MODAL ==========
+        function openVideoModal(videoSrc) {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImage = document.getElementById('lightbox-image');
+            const lightboxInfo = document.getElementById('lightbox-info');
+            
+            // Reemplazar imagen por video
+            lightboxImage.outerHTML = `
+                <video controls autoplay class="w-full h-full object-contain rounded-lg">
+                    <source src="${videoSrc}" type="video/mp4">
+                    Tu navegador no soporta el video.
+                </video>
+            `;
+            
+            document.getElementById('lightbox-title').textContent = 'Proceso creativo - Timelapse';
+            document.getElementById('lightbox-description').textContent = 'Documentación del proceso de creación mural';
+            
+            lightbox.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+        
+        // ========== FORMULARIO DE CONTACTO ==========
+        document.getElementById('contact-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                projectType: document.getElementById('project-type').value,
+                budget: document.getElementById('budget').value,
+                message: document.getElementById('message').value,
+                date: new Date().toISOString()
+            };
+
+            const automationQueue = JSON.parse(localStorage.getItem('pablor_leads') || '[]');
+            automationQueue.push({ ...formData, status: 'pendiente_de_contacto' });
+            localStorage.setItem('pablor_leads', JSON.stringify(automationQueue));
+            const automationStatus = document.getElementById('automation-status');
+            automationStatus.textContent = `Automatización ejecutada: solicitud #${automationQueue.length} guardada localmente y preparada para seguimiento.`;
+            automationStatus.classList.remove('hidden');
+            
+            // Enviar a WhatsApp
+            const whatsappMessage = `*Nueva propuesta de proyecto*\n\n*Nombre:* ${formData.name}\n*Email:* ${formData.email}\n*Tipo de proyecto:* ${formData.projectType}\n*Presupuesto:* ${formData.budget}\n\n*Descripción:*\n${formData.message}`;
+            
+            const whatsappUrl = `https://wa.me/573167083370?text=${encodeURIComponent(whatsappMessage)}`;
+            window.open(whatsappUrl, '_blank');
+            
+            // Reset form
+            document.getElementById('contact-form').reset();
+            
+            // Mostrar confirmación
+            showNotification('¡Propuesta enviada! Te contactaré pronto.');
+        });
+        
+        // ========== NOTIFICACIONES ==========
+        function showNotification(message) {
+            // Crear notificación
+            const notification = document.createElement('div');
+            notification.className = 'fixed top-6 right-6 bg-gradient-to-r from-[var(--neon-blue)] to-[var(--electric-purple)] text-[var(--deep-navy)] px-6 py-3 rounded-lg shadow-lg z-50 transform translate-x-full transition-transform duration-300';
+            notification.textContent = message;
+            notification.id = 'notification';
+            
+            document.body.appendChild(notification);
+            
+            // Animar entrada
+            setTimeout(() => {
+                notification.style.transform = 'translateX(0)';
+            }, 10);
+            
+            // Remover después de 3 segundos
+            setTimeout(() => {
+                notification.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    notification.remove();
+                }, 300);
+            }, 3000);
+        }
+        
+        // ========== SCROLL SUAVE ==========
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    const headerHeight = document.querySelector('nav').offsetHeight;
+                    const targetPosition = targetElement.offsetTop - headerHeight;
+                    
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // ========== ANIMACIÓN AL SCROLL ==========
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-fade-in');
+                }
+            });
+        }, observerOptions);
+        
+        // Observar elementos para animar
+        document.querySelectorAll('.art-card, .testimonial-card, .btn-primary').forEach(el => {
+            observer.observe(el);
+        });
+        
+        // ========== INICIALIZACIÓN ==========
+        document.addEventListener('DOMContentLoaded', () => {
+            // Inicializar filtro "TODO"
+            filterGallery('all');
+            
+            // Actualizar año en footer
+            document.querySelector('footer .text-sm').innerHTML = 
+                document.querySelector('footer .text-sm').innerHTML.replace('2025', new Date().getFullYear());
+            
+            console.log('Portafolio PABLOR/BLOR cargado ✅');
+            console.log('Modo:', config.cursorEnabled ? 'Cursor personalizado activado' : 'Modo táctil');
+        });
+    </script>
+    
+    <!-- ANALYTICS (Google Analytics placeholder) -->
+    <script>
+        // Reemplazar con tu ID de Google Analytics
+        // window.dataLayer = window.dataLayer || [];
+        // function gtag(){dataLayer.push(arguments);}
+        // gtag('js', new Date());
+        // gtag('config', 'TU-ID-GA4');
+    </script>
+    
+    <!-- APP.JS - LÓGICA DINÁMICA -->
+    <script src="app.js"></script>
+</body>
+</html>m
+
+    setTimeout(() => {
+        const loadingMessage = document.getElementById(loadId);
+        if (!loadingMessage) return;
+
+        const lowerQuery = query.toLowerCase();
+        const matchedItem = aiKnowledge.find((item) => item.keywords.some((keyword) => lowerQuery.includes(keyword)));
+        const reply = matchedItem
+            ? matchedItem.reply
+            : `Entiendo tu consulta sobre "${query}". Como agente de BLOR, puedo brindarte información detallada sobre comisiones de arte, proyectos de tecnología interactiva con Unity o desarrollo con IA. ¿Te gustaría cotizar un proyecto o explorar el portafolio?`;
+
+        loadingMessage.innerHTML = `<span style="background: #1f2937; color: #f3f4f6; border: 1px solid #374151; padding: 8px 12px; border-radius: 12px 12px 12px 0; display: inline-block; font-size: 13px; line-height: 1.4;">${escapeHTML(reply)}</span>`;
+        if (chatContainer) chatContainer.scrollTop = chatContainer.scrollHeight;
+    }, 900);
+}
+
+function handleAITyping(e) {
+    if(e.key === 'Enter') sendAIQuery();
+}
+</script>

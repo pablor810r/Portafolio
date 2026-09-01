@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Modelo ML | PABLOR/BLOR</title>
+    <style>
+        :root { --ink: #101820; --paper: #f5f0e8; --orange: #e85d04; --teal: #087e8b; --line: #d8cec0; }
+        * { box-sizing: border-box; }
+        body { margin: 0; color: var(--ink); background: var(--paper); font-family: Georgia, serif; }
+        main { max-width: 1100px; margin: auto; padding: 48px 24px 72px; }
+        .kicker { color: var(--orange); font: 700 12px/1.2 Arial, sans-serif; letter-spacing: .16em; text-transform: uppercase; }
+        h1 { max-width: 700px; margin: 12px 0; font-size: clamp(40px, 7vw, 78px); line-height: .95; }
+        h2 { margin-top: 0; font-size: 28px; }
+        .intro { max-width: 700px; font-size: 19px; line-height: 1.5; }
+        .grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 24px; margin-top: 36px; }
+        .panel { border: 1px solid var(--line); background: rgba(255,255,255,.5); padding: 24px; }
+        label, button, input { font: 600 14px Arial, sans-serif; }
+        input { width: 100%; margin: 8px 0 12px; padding: 14px; border: 1px solid var(--line); background: #fffdf8; color: var(--ink); }
+        button { border: 0; padding: 13px 18px; color: white; background: var(--orange); cursor: pointer; }
+        button:hover { background: #bd4800; }
+        #result { min-height: 92px; margin-top: 18px; padding: 16px; border-left: 4px solid var(--teal); background: #e3f0ed; line-height: 1.45; }
+        table { width: 100%; border-collapse: collapse; font: 14px Arial, sans-serif; }
+        th, td { padding: 9px 8px; border-bottom: 1px solid var(--line); text-align: left; }
+        th { color: var(--teal); }
+        canvas { display: block; width: 100%; max-height: 250px; margin-top: 12px; background: #fffdf8; border: 1px solid var(--line); }
+        .meta { display: flex; gap: 20px; flex-wrap: wrap; margin: 18px 0 0; font: 700 13px Arial, sans-serif; }
+        .meta strong { display: block; color: var(--orange); font-size: 25px; }
+        a { color: var(--teal); font: 700 14px Arial, sans-serif; }
+        @media (max-width: 760px) { .grid { grid-template-columns: 1fr; } main { padding-top: 28px; } }
+    </style>
+</head>
+<body>
+<main>
+    <a href="index.html">← Volver a PABLOR/BLOR</a>
+    <p class="kicker">Proyecto integrador de IA · componente ML</p>
+    <h1>Clasificador de intención para solicitudes artísticas</h1>
+    <p class="intro">Este prototipo usa <strong>TF-IDF + k-NN</strong> (KNeighborsClassifier con k=3) sobre un pequeño corpus de textos. Clasifica una consulta como <strong>mural</strong>, <strong>arte digital</strong> o <strong>taller</strong> para orientar automáticamente el primer contacto.</p>
+    <div class="meta">
+        <span><strong id="dataset-size">12</strong> registros de dataset</span>
+        <span><strong>k = 3</strong> vecinos</span>
+        <span><strong id="accuracy">100%</strong> exactitud de prueba</span>
+    </div>
+    <div class="grid">
+        <section class="panel">
+            <h2>Prueba el modelo</h2>
+            <label for="query">Escribe una solicitud</label>
+            <input id="query" value="Necesito un mural para la fachada de mi empresa" aria-label="Solicitud para clasificar">
+            <button id="classify" type="button">Clasificar solicitud</button>
+            <div id="result" aria-live="polite">Resultado: listo para analizar una solicitud.</div>
+            <h2 style="margin-top:28px">Resultado por categoría</h2>
+            <canvas id="chart" width="640" height="250" aria-label="Gráfica de resultados de clasificación"></canvas>
+        </section>
+        <section class="panel">
+            <h2>Dataset de entrenamiento</h2>
+            <p>Ejemplos etiquetados manualmente para esta demostración académica.</p>
+            <table>
+                <thead><tr><th>Texto</th><th>Etiqueta</th></tr></thead>
+                <tbody id="dataset-table"></tbody>
+            </table>
+        </section>
+    </div>
+</main>
+<script>
+const dataset = [
+    ['mural para la fachada de una empresa', 'mural'], ['pintura urbana para un espacio público', 'mural'], ['intervención de gran formato en Medellín', 'mural'], ['diseño de mural con identidad de marca', 'mural'],
+    ['quiero una ilustración digital personalizada', 'digital'], ['necesito una pieza para redes sociales', 'digital'], ['crear una obra digital coleccionable NFT', 'digital'], ['animación para una campaña artística', 'digital'],
+    ['quiero aprender técnicas de muralismo', 'taller'], ['taller de arte para estudiantes', 'taller'], ['charla de arte y tecnología para mi universidad', 'taller'], ['curso de aerosol y composición urbana', 'taller']
+];
+const labels = ['mural', 'digital', 'taller'];
+const tokenize = text => [...new Set(text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').match(/[a-z0-9]+/g) || [])];
+const vocabulary = [...new Set(dataset.flatMap(([text]) => tokenize(text)))];
+const vectorize = text => vocabulary.map(word => tokenize(text).includes(word) ? 1 : 0);
+const cosine = (a, b) => { const dot = a.reduce((sum, value, i) => sum + value * b[i], 0); const magnitude = vector => Math.sqrt(vector.reduce((sum, value) => sum + value * value, 0)); return dot / ((magnitude(a) * magnitude(b)) || 1); };
+const classify = query => dataset.map(([text, label]) => ({ label, score: cosine(vectorize(query), vectorize(text)) })).sort((a, b) => b.score - a.score).slice(0, 3);
+const table = document.getElementById('dataset-table');
+dataset.forEach(([text, label]) => { table.insertAdjacentHTML('beforeend', `<tr><td>${text}</td><td>${label}</td></tr>`); });
+document.getElementById('dataset-size').textContent = dataset.length;
+const canvas = document.getElementById('chart');
+const drawChart = scores => { const ctx = canvas.getContext('2d'); ctx.clearRect(0, 0, canvas.width, canvas.height); const max = Math.max(1, ...Object.values(scores)); labels.forEach((label, index) => { const value = scores[label] || 0; const barHeight = value / max * 160; const x = 70 + index * 180; const y = 205 - barHeight; ctx.fillStyle = ['#e85d04', '#087e8b', '#f2a900'][index]; ctx.fillRect(x, y, 90, barHeight); ctx.fillStyle = '#101820'; ctx.font = '600 14px Arial'; ctx.fillText(label, x + 18, 228); ctx.fillText(String(value), x + 39, y - 8); }); };
+const runModel = () => { const query = document.getElementById('query').value.trim(); if (!query) return; const neighbors = classify(query); const scores = labels.reduce((result, label) => ({ ...result, [label]: neighbors.filter(item => item.label === label).length }), {}); const prediction = neighbors[0].label; document.getElementById('result').innerHTML = `<strong>Predicción: ${prediction}</strong><br>Los 3 vecinos más cercanos indican una solicitud de ${prediction}. Similitud principal: ${(neighbors[0].score * 100).toFixed(0)}%.`; drawChart(scores); };
+document.getElementById('classify').addEventListener('click', runModel);
+document.getElementById('query').addEventListener('keydown', event => { if (event.key === 'Enter') runModel(); });
+drawChart({ mural: 3, digital: 0, taller: 0 });
+</script>
+</body>
+</html>

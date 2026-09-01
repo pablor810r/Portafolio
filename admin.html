@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PABLOR Admin - Panel de Control</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon-orange: #ff6b35;
+            --neon-blue: #00f3ff;
+            --deep-navy: #0a0f1f;
+            --electric-purple: #9d4edd;
+        }
+        
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .font-impact {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--deep-navy) 0%, #1a1f3a 100%);
+            color: white;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--neon-blue) 0%, var(--electric-purple) 100%);
+        }
+        
+        .btn-orange {
+            background: linear-gradient(135deg, var(--neon-orange) 0%, #ff8c42 100%);
+        }
+        
+        .card-admin {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .input-admin {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 107, 53, 0.3);
+            color: white;
+        }
+        
+        .input-admin:focus {
+            border-color: var(--neon-orange);
+            box-shadow: 0 0 10px rgba(255, 107, 53, 0.5);
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- LOGIN SCREEN -->
+    <div id="loginScreen" class="fixed inset-0 flex items-center justify-center z-50">
+        <div class="card-admin rounded-2xl p-12 w-full max-w-md m-4">
+            <h1 class="font-impact text-4xl mb-2"><span style="color: var(--neon-orange);">PABLOR</span> Admin</h1>
+            <p class="text-gray-400 mb-8">Panel de Control Privado</p>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm text-gray-300 mb-2">Contraseña</label>
+                    <input type="password" id="adminPassword" class="input-admin w-full px-4 py-3 rounded-lg" placeholder="Ingresa tu contraseña">
+                </div>
+                
+                <button onclick="loginAdmin()" class="btn-orange w-full py-3 rounded-lg font-bold text-white hover:shadow-lg transition-all">
+                    Ingresar
+                </button>
+                
+                <a href="/" class="block text-center text-gray-400 hover:text-var(--neon-orange) transition-colors mt-4">
+                    ← Volver al Portafolio
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ADMIN PANEL (hidden until login) -->
+    <div id="adminPanel" class="hidden">
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-[var(--deep-navy)] to-[var(--electric-purple)] border-b border-[var(--neon-orange)]">
+            <div class="max-w-7xl mx-auto px-6 py-6 flex justify-between items-center">
+                <h1 class="font-impact text-3xl"><span style="color: var(--neon-orange);">⚙️ ADMIN</span> PANEL</h1>
+                <button onclick="logoutAdmin()" class="bg-red-600 hover:bg-red-700 px-6 py-2 rounded-lg transition-colors">
+                    Cerrar Sesión
+                </button>
+            </div>
+        </div>
+        
+        <!-- Tabs -->
+        <div class="max-w-7xl mx-auto px-6 py-8">
+            <div class="flex gap-4 mb-8 border-b border-white/10">
+                <button onclick="switchTab('obras')" id="tab-obras" class="px-6 py-3 font-bold text-[var(--neon-orange)] border-b-2 border-[var(--neon-orange)]">
+                    📸 Mis Obras
+                </button>
+                <button onclick="switchTab('nueva')" id="tab-nueva" class="px-6 py-3 font-bold text-gray-400 hover:text-white transition-colors">
+                    ➕ Nueva Obra
+                </button>
+                <button onclick="switchTab('productos')" id="tab-productos" class="px-6 py-3 font-bold text-gray-400 hover:text-white transition-colors">
+                    🛍️ Productos
+                </button>
+                <button onclick="switchTab('stats')" id="tab-stats" class="px-6 py-3 font-bold text-gray-400 hover:text-white transition-colors">
+                    📊 Estadísticas
+                </button>
+            </div>
+            
+            <!-- TAB: OBRAS -->
+            <div id="content-obras" class="block">
+                <div class="grid gap-6" id="worksGrid">
+                    <!-- Cargado dinámicamente -->
+                </div>
+            </div>
+            
+            <!-- TAB: NUEVA OBRA -->
+            <div id="content-nueva" class="hidden max-w-4xl">
+                <div class="card-admin rounded-2xl p-8">
+                    <h2 class="text-2xl font-bold mb-6">Agregar Nueva Obra</h2>
+                    
+                    <form id="newWorkForm" class="space-y-6">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm text-gray-300 mb-2">Título *</label>
+                                <input type="text" id="input-title" class="input-admin w-full px-4 py-3 rounded-lg" required>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm text-gray-300 mb-2">Categoría *</label>
+                                <select id="input-category" class="input-admin w-full px-4 py-3 rounded-lg" required>
+                                    <option value="">Selecciona categoría</option>
+                                    <option value="urbano">Urbano (BLOR)</option>
+                                    <option value="digital">Digital</option>
+                                    <option value="academico">Académico</option>
+                                    <option value="proceso">Proceso</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm text-gray-300 mb-2">Fecha *</label>
+                                <input type="text" id="input-date" class="input-admin w-full px-4 py-3 rounded-lg" placeholder="2024" required>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm text-gray-300 mb-2">Ubicación</label>
+                                <input type="text" id="input-location" class="input-admin w-full px-4 py-3 rounded-lg" placeholder="Medellín, Colombia">
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm text-gray-300 mb-2">Técnica</label>
+                            <input type="text" id="input-technique" class="input-admin w-full px-4 py-3 rounded-lg" placeholder="Aerosol y acrílico">
+                        </div>
+                        
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm text-gray-300 mb-2">Tamaño</label>
+                                <input type="text" id="input-size" class="input-admin w-full px-4 py-3 rounded-lg" placeholder="Mural 10x8m">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm text-gray-300 mb-2">Precio (COP) - 0 si no está disponible</label>
+                                <input type="number" id="input-price" class="input-admin w-full px-4 py-3 rounded-lg" value="0">
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm text-gray-300 mb-2">Descripción</label>
+                            <textarea id="input-description" class="input-admin w-full px-4 py-3 rounded-lg h-24" placeholder="Describe tu obra..."></textarea>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm text-gray-300 mb-2">Imagen *</label>
+                            <input type="file" id="input-image" class="w-full px-4 py-3 rounded-lg bg-black/30" accept="image/*" required>
+                            <p class="text-xs text-gray-400 mt-2">Se guardará automáticamente en images/arte_urbano/</p>
+                        </div>
+                        
+                        <div class="flex gap-4">
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" id="input-featured">
+                                <span>Destacar esta obra</span>
+                            </label>
+                        </div>
+                        
+                        <button type="submit" class="btn-orange w-full py-3 rounded-lg font-bold text-white hover:shadow-lg transition-all">
+                            ➕ Agregar Obra
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- TAB: PRODUCTOS -->
+            <div id="content-productos" class="hidden">
+                <div class="grid gap-6" id="productsGrid">
+                    <!-- Cargado dinámicamente -->
+                </div>
+            </div>
+            
+            <!-- TAB: STATS -->
+            <div id="content-stats" class="hidden">
+                <div class="grid md:grid-cols-4 gap-6">
+                    <div class="card-admin rounded-xl p-6 text-center">
+                        <div class="text-4xl font-bold mb-2" style="color: var(--neon-orange);" id="stat-works">0</div>
+                        <p class="text-gray-400">Obras en Portafolio</p>
+                    </div>
+                    <div class="card-admin rounded-xl p-6 text-center">
+                        <div class="text-4xl font-bold mb-2" style="color: var(--neon-blue);" id="stat-visitantes">0</div>
+                        <p class="text-gray-400">Visitantes (localStorage)</p>
+                    </div>
+                    <div class="card-admin rounded-xl p-6 text-center">
+                        <div class="text-4xl font-bold mb-2" style="color: var(--electric-purple);">3</div>
+                        <p class="text-gray-400">Productos Activos</p>
+                    </div>
+                    <div class="card-admin rounded-xl p-6 text-center">
+                        <div class="text-4xl font-bold mb-2" style="color: var(--neon-orange);">$950k</div>
+                        <p class="text-gray-400">Valor Portafolio</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Contraseña (CAMBIAR EN PRODUCCIÓN)
+        const ADMIN_PASSWORD = 'pablor2024';
+        const DATA_KEY = 'pablor_data';
+        
+        let appData = {};
+        
+        // Load data from localStorage and fallback to data.json
+        async function loadData() {
+            try {
+                const response = await fetch('/data.json');
+                appData = await response.json();
+                localStorage.setItem(DATA_KEY, JSON.stringify(appData));
+            } catch (e) {
+                const saved = localStorage.getItem(DATA_KEY);
+                if (saved) {
+                    appData = JSON.parse(saved);
+                }
+            }
+        }
+        
+        function saveData() {
+            localStorage.setItem(DATA_KEY, JSON.stringify(appData));
+            // Optionally post to server here
+        }
+        
+        // Admin functions
+        function loginAdmin() {
+            const password = document.getElementById('adminPassword').value;
+            if (password === ADMIN_PASSWORD) {
+                document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('adminPanel').classList.remove('hidden');
+                loadData().then(() => {
+                    renderWorks();
+                    renderProducts();
+                    renderStats();
+                });
+            } else {
+                alert('Contraseña incorrecta');
+            }
+        }
+        
+        function logoutAdmin() {
+            document.getElementById('loginScreen').classList.remove('hidden');
+            document.getElementById('adminPanel').classList.add('hidden');
+            document.getElementById('adminPassword').value = '';
+        }
+        
+        function switchTab(tab) {
+            // Hide all content
+            document.querySelectorAll('[id^="content-"]').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('[id^="tab-"]').forEach(el => {
+                el.classList.remove('text-[var(--neon-orange)]', 'border-b-2', 'border-[var(--neon-orange)]');
+                el.classList.add('text-gray-400');
+            });
+            
+            // Show selected
+            document.getElementById(`content-${tab}`).classList.remove('hidden');
+            document.getElementById(`tab-${tab}`).classList.remove('text-gray-400');
+            document.getElementById(`tab-${tab}`).classList.add('text-[var(--neon-orange)]', 'border-b-2', 'border-[var(--neon-orange)]');
+        }
+        
+        function renderWorks() {
+            const grid = document.getElementById('worksGrid');
+            grid.innerHTML = appData.works.map(work => `
+                <div class="card-admin rounded-xl p-6 flex gap-6">
+                    <img src="${work.image}" alt="${work.title}" class="w-32 h-32 object-cover rounded-lg">
+                    <div class="flex-1">
+                        <h3 class="text-xl font-bold mb-2">${work.title}</h3>
+                        <p class="text-gray-400 text-sm mb-3">${work.date} • ${work.location}</p>
+                        <div class="flex gap-2 flex-wrap mb-3">
+                            <span class="bg-[var(--neon-orange)]/20 text-[var(--neon-orange)] px-3 py-1 rounded text-xs">${work.category}</span>
+                            <span class="bg-[var(--neon-blue)]/20 text-[var(--neon-blue)] px-3 py-1 rounded text-xs">${work.status}</span>
+                        </div>
+                        <button onclick="editWork('${work.id}')" class="text-[var(--neon-orange)] hover:text-[var(--neon-orange)]/80 text-sm font-bold">
+                            ✏️ Editar
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function renderProducts() {
+            const grid = document.getElementById('productsGrid');
+            grid.innerHTML = appData.products.map(product => `
+                <div class="card-admin rounded-xl p-6">
+                    <img src="${product.image}" alt="${product.title}" class="w-full h-64 object-cover rounded-lg mb-4">
+                    <h3 class="text-lg font-bold mb-2">${product.title}</h3>
+                    <p class="text-[var(--neon-orange)] font-bold mb-3">$${product.price.toLocaleString() || 'Consultar'}</p>
+                    <button onclick="editProduct('${product.id}')" class="text-[var(--neon-orange)] hover:text-[var(--neon-orange)]/80 text-sm font-bold">
+                        ✏️ Editar
+                    </button>
+                </div>
+            `).join('');
+        }
+        
+        function renderStats() {
+            document.getElementById('stat-works').textContent = appData.works.length;
+            document.getElementById('stat-visitantes').textContent = localStorage.getItem('visitantes') || 0;
+        }
+        
+        function editWork(id) {
+            alert('Edición inline coming soon. Contacta tu base de datos.');
+        }
+        
+        function editProduct(id) {
+            alert('Edición de productos coming soon.');
+        }
+        
+        // Handle new work form
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadData();
+            
+            document.getElementById('newWorkForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const title = document.getElementById('input-title').value;
+                const category = document.getElementById('input-category').value;
+                const date = document.getElementById('input-date').value;
+                const location = document.getElementById('input-location').value;
+                const technique = document.getElementById('input-technique').value;
+                const size = document.getElementById('input-size').value;
+                const price = parseInt(document.getElementById('input-price').value) || 0;
+                const description = document.getElementById('input-description').value;
+                const featured = document.getElementById('input-featured').checked;
+                const imageFile = document.getElementById('input-image').files[0];
+                
+                if (!title || !category || !date || !imageFile) {
+                    alert('Completa los campos requeridos');
+                    return;
+                }
+                
+                // Create unique filename
+                const timestamp = Date.now();
+                const filename = `work_${timestamp}_${imageFile.name}`;
+                const imagePath = `images/arte_urbano/${filename}`;
+                
+                // Create work object
+                const newWork = {
+                    id: `work_${timestamp}`,
+                    title,
+                    category,
+                    image: imagePath,
+                    imageWebp: imagePath.replace(/\.\w+$/, '.webp'),
+                    thumbnail: imagePath.replace(/\.\w+$/, '_opt.jpg'),
+                    date,
+                    location,
+                    technique,
+                    size,
+                    description,
+                    price,
+                    status: price > 0 ? 'disponible' : 'exposicion',
+                    featured,
+                    order: appData.works.length + 1
+                };
+                
+                appData.works.push(newWork);
+                saveData();
+                
+                // Reset form
+                document.getElementById('newWorkForm').reset();
+                alert('✅ Obra agregada! Guarda la imagen en: ' + imagePath);
+                renderWorks();
+                switchTab('obras');
+            });
+        });
+    </script>
+</body>
+</html>
