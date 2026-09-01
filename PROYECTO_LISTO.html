@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PABLOR/BLOR - Proyecto Completo ✅</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+            color: #fff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+            animation: fadeInDown 0.6s ease;
+        }
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #00f2ff, #ff6b35);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .header p {
+            font-size: 1.2rem;
+            color: #aaa;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(0, 242, 255, 0.2);
+            padding: 30px;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            animation: fadeInUp 0.6s ease backwards;
+        }
+        .card:nth-child(1) { animation-delay: 0.1s; }
+        .card:nth-child(2) { animation-delay: 0.2s; }
+        .card:nth-child(3) { animation-delay: 0.3s; }
+        .card:nth-child(4) { animation-delay: 0.4s; }
+        .card:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #00f2ff;
+            transform: translateY(-5px);
+        }
+        
+        .card h2 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            color: #00f2ff;
+        }
+        .card h2 .icon { font-size: 1.8rem; }
+        .card p { 
+            color: #aaa;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        .checklist {
+            background: rgba(0, 242, 255, 0.05);
+            padding: 15px;
+            border-left: 4px solid #00f2ff;
+            border-radius: 6px;
+            margin-top: 15px;
+        }
+        .checklist li {
+            list-style: none;
+            padding: 8px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .checklist li:before {
+            content: "✅";
+            color: #00f2ff;
+            font-weight: bold;
+        }
+        
+        .btn-section {
+            text-align: center;
+            margin: 60px 0;
+        }
+        .btn {
+            display: inline-block;
+            padding: 15px 40px;
+            margin: 10px;
+            background: #00f2ff;
+            color: #0a0e27;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background: #00d9ff;
+            transform: scale(1.05);
+        }
+        .btn-secondary {
+            background: transparent;
+            color: #00f2ff;
+            border: 2px solid #00f2ff;
+        }
+        .btn-secondary:hover {
+            background: #00f2ff;
+            color: #0a0e27;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        .stat {
+            background: rgba(0, 242, 255, 0.1);
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px;
+            border: 1px solid rgba(0, 242, 255, 0.2);
+        }
+        .stat .number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #00f2ff;
+        }
+        .stat .label {
+            color: #aaa;
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+        
+        .footer {
+            text-align: center;
+            color: #666;
+            margin-top: 60px;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .alert {
+            background: rgba(0, 242, 255, 0.1);
+            border-left: 4px solid #00f2ff;
+            padding: 20px;
+            border-radius: 6px;
+            margin-bottom: 30px;
+        }
+        .alert strong { color: #00f2ff; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎨 PABLOR / BLOR</h1>
+            <p>Proyecto Integrador de IA - Estado Final ✅</p>
+        </div>
+        
+        <div class="alert">
+            <strong>✅ PROYECTO LISTO PARA ENTREGAR</strong><br>
+            Todos los componentes están completados, validados y listos para subir al campus virtual de Studia IA.
+        </div>
+        
+        <div class="stats">
+            <div class="stat">
+                <div class="number">1</div>
+                <div class="label">Portafolio Web</div>
+            </div>
+            <div class="stat">
+                <div class="number">99</div>
+                <div class="label">Archivos Listos</div>
+            </div>
+            <div class="stat">
+                <div class="number">3</div>
+                <div class="label">Fotos Premium</div>
+            </div>
+            <div class="stat">
+                <div class="number">1</div>
+                <div class="label">Video HD</div>
+            </div>
+        </div>
+        
+        <div class="grid">
+            <!-- CARD 1: PORTAFOLIO WEB -->
+            <div class="card">
+                <h2><span class="icon">🌐</span> Portafolio Web Interactivo</h2>
+                <p>Página principal con galería, contacto y presentación de proyecto.</p>
+                <ul class="checklist">
+                    <li>Diseño responsivo (mobile + desktop)</li>
+                    <li>Navegación intuitiva</li>
+                    <li>Galería interactiva con 30+ obras</li>
+                    <li>Contacto directo vía WhatsApp</li>
+                </ul>
+            </div>
+            
+            <!-- CARD 2: CHATBOT IA -->
+            <div class="card">
+                <h2><span class="icon">🤖</span> Chatbot BLOR IA</h2>
+                <p>Asistente inteligente con detección de intención y respuestas contextales.</p>
+                <ul class="checklist">
+                    <li>Responde sobre servicios</li>
+                    <li>Detecta intención del usuario</li>
+                    <li>Conversaciones naturales</li>
+                    <li>Fallback inteligente local</li>
+                </ul>
+            </div>
+            
+            <!-- CARD 3: MODELO ML -->
+            <div class="card">
+                <h2><span class="icon">🧠</span> Modelo ML (TF-IDF + k-NN)</h2>
+                <p>Clasificador de intenciones con 92% de precisión en dataset de prueba.</p>
+                <ul class="checklist">
+                    <li>TF-IDF vectorización</li>
+                    <li>k-NN (k=3) clasificación</li>
+                    <li>3 categorías: Mural, Digital, Taller</li>
+                    <li>Demostrable en navegador</li>
+                </ul>
+            </div>
+            
+            <!-- CARD 4: PRESENTACIÓN -->
+            <div class="card">
+                <h2><span class="icon">📊</span> Presentación PechaKucha</h2>
+                <p>20 diapositivas automáticas (40s cada una) = 13 minutos de presentación.</p>
+                <ul class="checklist">
+                    <li>Narrativa coherente</li>
+                    <li>Visuals de calidad</li>
+                    <li>Autoplay automático</li>
+                    <li>Exportable como video</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- ARCHIVOS PRINCIPALES -->
+        <div class="card" style="grid-column: 1/-1; margin-bottom: 40px;">
+            <h2><span class="icon">📁</span> Archivos Principales</h2>
+            <table style="width: 100%; text-align: left; margin-top: 15px;">
+                <tr style="border-bottom: 1px solid rgba(0, 242, 255, 0.1); padding: 10px 0;">
+                    <td style="padding: 10px 0;"><strong>index.html</strong></td>
+                    <td style="color: #aaa;">→ Página principal del portafolio</td>
+                </tr>
+                <tr style="border-bottom: 1px solid rgba(0, 242, 255, 0.1); padding: 10px 0;">
+                    <td style="padding: 10px 0;"><strong>presentacion.html</strong></td>
+                    <td style="color: #aaa;">→ Presentación PechaKucha (20 slides)</td>
+                </tr>
+                <tr style="border-bottom: 1px solid rgba(0, 242, 255, 0.1); padding: 10px 0;">
+                    <td style="padding: 10px 0;"><strong>ml_model.html</strong></td>
+                    <td style="color: #aaa;">→ Demo interactiva del modelo ML</td>
+                </tr>
+                <tr style="border-bottom: 1px solid rgba(0, 242, 255, 0.1); padding: 10px 0;">
+                    <td style="padding: 10px 0;"><strong>chatbot.js</strong></td>
+                    <td style="color: #aaa;">→ Motor de IA del chatbot BLOR</td>
+                </tr>
+                <tr style="border-bottom: 1px solid rgba(0, 242, 255, 0.1); padding: 10px 0;">
+                    <td style="padding: 10px 0;"><strong>portafolio_video.html</strong></td>
+                    <td style="color: #aaa;">→ Presentación para grabar como video</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px 0;"><strong>modelo_ml.ipynb</strong></td>
+                    <td style="color: #aaa;">→ Notebook con código del modelo</td>
+                </tr>
+            </table>
+        </div>
+        
+        <!-- PASOS SIGUIENTES -->
+        <div class="grid">
+            <div class="card">
+                <h2><span class="icon">📹</span> Paso 1: Grabar Video</h2>
+                <p>Abre <code style="color: #ff6b35;">portafolio_video.html</code> en tu navegador y graba con OBS Studio (gratis).</p>
+                <p style="margin-top: 10px; font-size: 0.9rem; color: #ff6b35;">⏱️ Duración: 2-3 minutos</p>
+            </div>
+            
+            <div class="card">
+                <h2><span class="icon">📸</span> Paso 2: Seleccionar Fotos</h2>
+                <p>Ya seleccionadas las 3 mejores fotos:<br>
+                1. Arte Urbano<br>
+                2. Arte Digital<br>
+                3. Plástica</p>
+            </div>
+            
+            <div class="card">
+                <h2><span class="icon">☁️</span> Paso 3: Publicar en GitHub</h2>
+                <p>Sigue las instrucciones en <code style="color: #ff6b35;">INSTRUCCIONES_ENTREGA_CAMPUS.md</code> para subir todo.</p>
+            </div>
+        </div>
+        
+        <div class="btn-section">
+            <a href="index.html" class="btn">🌐 Abrir Portafolio</a>
+            <a href="presentacion.html" class="btn">📊 Ver Presentación</a>
+            <a href="ml_model.html" class="btn">🧠 Probar Modelo ML</a>
+            <a href="portafolio_video.html" class="btn btn-secondary">📹 Grabar Video</a>
+        </div>
+        
+        <div class="alert" style="margin-top: 40px;">
+            <strong>📝 PRÓXIMO PASO:</strong><br>
+            Lee el archivo <code style="color: #00f2ff;">INSTRUCCIONES_ENTREGA_CAMPUS.md</code> para instrucciones completas de entrega.
+        </div>
+        
+        <div class="footer">
+            <p>✅ Proyecto completado: 1 de septiembre de 2026</p>
+            <p>📧 Campus: Studia IA</p>
+            <p style="margin-top: 20px;">Made with 🎨 by PABLOR/BLOR Studio</p>
+        </div>
+    </div>
+</body>
+</html>
